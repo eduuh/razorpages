@@ -1,3 +1,4 @@
+using System.Linq;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,16 +24,25 @@ namespace uploaddownloadfiles
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var openapisecurityscheme = new NSwag.OpenApiSecurityScheme();
+            openapisecurityscheme.Type = NSwag.OpenApiSecuritySchemeType.ApiKey;
+            openapisecurityscheme.Name = "Authorization Token";
+            openapisecurityscheme.Description = "Bearer + valid jwt token into field";
+            openapisecurityscheme.In = NSwag.OpenApiSecurityApiKeyLocation.Header;
+
             services.AddSwaggerDocument(options =>
             {
                 options.Title = "Kaizenblobservice";
                 options.DocumentName = "KaizenUploadDowload V1";
                 options.Description = "Kaizen upload and Dowload service internal Api";
+
+                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  openapisecurityscheme);
             }
             );
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
 
-            services.AddSingleton(x => new BlobServiceClient(Configuration.GetValue<string>("AzureBlobStorageConnectionString")));
+            services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
             services.AddSingleton<IBlobService, BlobService>();
         }
 
