@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using UploadandDowloadService.Data;
+using UploadandDowloadService.Areas.Identity;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 using UploadandDowloadService.Services;

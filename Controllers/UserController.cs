@@ -7,6 +7,8 @@ using UploadandDowloadService.Services;
 
 namespace UploadandDowloadService.Controllers
 {
+
+    [ApiController]
     public class UserController : Controller
     {
         private readonly IUser user;

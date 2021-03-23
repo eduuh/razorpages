@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using UploadandDowloadService.Areas.Identity;
 
 namespace UploadandDowloadService
 {
@@ -13,6 +16,16 @@ namespace UploadandDowloadService
     {
         public static void Main(string[] args)
         {
+            var host = CreateHostBuilder(args).Build();
+            using (var scope = host.Services.CreateScope())
+            {
+               var service = scope.ServiceProvider;
+
+               try {
+                   var context = service.GetRequiredService<AppDbContext>();
+                   context.Database.Migrate();
+               } catch(Exception){}
+            }
             CreateHostBuilder(args).Build().Run();
         }
 
