@@ -5,11 +5,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using uploaddownloadfiles.Interface;
-using uploaddownloadfiles.Models;
-using uploaddownloadfiles.Services;
+using UploadandDowloadService.Interface;
+using UploadandDowloadService.Models;
+using UploadandDowloadService.Infratructure;
+using UploadandDowloadService.Data;
+using Microsoft.EntityFrameworkCore;
+using UploadandDowloadService.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 
-namespace uploaddownloadfiles
+namespace UploadandDowloadService
 {
     public class Startup
     {
@@ -23,6 +30,22 @@ namespace uploaddownloadfiles
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            //configure mys sql connection
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
+                o => o.EnableRetryOnFailure()
+            ));
+
+            // congiguring identity
+            var builder = services.AddIdentityCore<AppUser>();
+            var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identitybuilder.AddRoles<IdentityRole>();
+            identitybuilder.AddEntityFrameworkStores<AppDbContext>();
+            identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+
+
             services.AddControllersWithViews();
 
             var openapisecurityscheme = new NSwag.OpenApiSecurityScheme();
@@ -44,6 +67,25 @@ namespace uploaddownloadfiles
 
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
             services.AddSingleton<IBlobService, BlobService>();
+
+            services.AddScoped<IJwtToken, JwtGenerator>();
+
+            // diffeernt instance
+            services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
+
+
+            
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokenkey"]));
+            var TokenValidationParameter = new TokenValidationParameters();
+            TokenValidationParameter.ValidateIssuerSigningKey = true;
+            TokenValidationParameter.IssuerSigningKey = key;
+            TokenValidationParameter.ValidateAudience = false;
+            TokenValidationParameter.ValidateIssuer = false;
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+                opt.TokenValidationParameters = TokenValidationParameter;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

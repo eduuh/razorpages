@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace uploaddownloadfiles.Models
+namespace UploadandDowloadService.Models
 {
     public class BlobInformation
     {
