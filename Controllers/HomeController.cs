@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using uploaddownloadfiles.Models;
+using UploadandDowloadService.Models;
 
-namespace uploaddownloadfiles.Controllers
+namespace UploadandDowloadService.Controllers
 {
     public class HomeController : Controller
     {
