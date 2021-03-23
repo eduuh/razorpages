@@ -1,14 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Azure.Storage;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Microsoft.AspNetCore.Http;
-using uploaddownloadfiles.Models;
-
 namespace uploaddownloadfiles.Helper
 {
     public class StorageHelper

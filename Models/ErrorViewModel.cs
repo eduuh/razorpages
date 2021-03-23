@@ -1,6 +1,6 @@
 using System;
 
-namespace uploaddownloadfiles.Models
+namespace UploadandDowloadService.Models
 {
     public class ErrorViewModel
     {
