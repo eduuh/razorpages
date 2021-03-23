@@ -8,5 +8,6 @@ namespace UploadandDowloadService.Models
     public string LastName { get; set; }
      public bool isStudent { get; set; }
      public bool isTeacher { get; set; }
+     public bool isParent {get; set;}
     }
 }
