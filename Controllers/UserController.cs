@@ -7,6 +7,8 @@ using UploadandDowloadService.Services;
 
 namespace UploadandDowloadService.Controllers
 {
+
+    [ApiController]
     public class UserController : Controller
     {
         private readonly IUser user;
@@ -44,6 +46,15 @@ namespace UploadandDowloadService.Controllers
             {
                 return new CustomActionResult<UserSuccessResponse>(result, HttpStatusCode.BadRequest);
             };
+        }
+
+
+        [HttpGet("user/me")]
+        public async Task<IActionResult> CurrentUser()
+        {
+            var result = await user.GetCurrentLoginDetails();
+
+            return Ok(result);
         }
 
 

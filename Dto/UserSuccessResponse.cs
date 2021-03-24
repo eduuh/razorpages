@@ -18,6 +18,16 @@ namespace UploadandDowloadService.Services
       {
           get { return token; }
       }
+
+      public string Email
+      {
+          get { return email; }
+      }
+
+      public string UserName
+      {
+          get { return username; }
+      }
       
     }
 }

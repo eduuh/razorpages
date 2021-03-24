@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UploadandDowloadService.Data;
+using UploadandDowloadService.Areas.Identity;
 
 namespace uploaddownloadfiles.Migrations
 {
@@ -158,6 +158,9 @@ namespace uploaddownloadfiles.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClassId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -198,8 +201,14 @@ namespace uploaddownloadfiles.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("SchoolId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -207,6 +216,12 @@ namespace uploaddownloadfiles.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("isParent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isRep")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("isStudent")
                         .HasColumnType("bit");
@@ -216,6 +231,8 @@ namespace uploaddownloadfiles.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClassId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -224,7 +241,121 @@ namespace uploaddownloadfiles.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("SchoolId");
+
+                    b.HasIndex("SubjectId");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Class", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Content", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BlobUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ContentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Contents");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.School", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Schools");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.StudentParent", b =>
+                {
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ParentId", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentParent");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.StudentSubjectEnrolled", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AppUserId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("StudentSubjectEnrolled");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Subject", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TotalMarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -276,6 +407,111 @@ namespace uploaddownloadfiles.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.AppUser", b =>
+                {
+                    b.HasOne("UploadandDowloadService.Models.Class", "Class")
+                        .WithMany("students")
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("UploadandDowloadService.Models.School", "School")
+                        .WithMany("Stakeholders")
+                        .HasForeignKey("SchoolId");
+
+                    b.HasOne("UploadandDowloadService.Models.Subject", null)
+                        .WithMany("Students")
+                        .HasForeignKey("SubjectId");
+
+                    b.Navigation("Class");
+
+                    b.Navigation("School");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Content", b =>
+                {
+                    b.HasOne("UploadandDowloadService.Models.Subject", "Subject")
+                        .WithMany("Contents")
+                        .HasForeignKey("SubjectId");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.StudentParent", b =>
+                {
+                    b.HasOne("UploadandDowloadService.Models.AppUser", "Parent")
+                        .WithMany("Childrens")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UploadandDowloadService.Models.AppUser", "Student")
+                        .WithMany("Parents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.StudentSubjectEnrolled", b =>
+                {
+                    b.HasOne("UploadandDowloadService.Models.AppUser", "Appuser")
+                        .WithMany("SubjectEnrolled")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UploadandDowloadService.Models.Subject", "Subject")
+                        .WithMany("StudentEnrolled")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appuser");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Subject", b =>
+                {
+                    b.HasOne("UploadandDowloadService.Models.AppUser", "Teacher")
+                        .WithMany("Subjects")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.AppUser", b =>
+                {
+                    b.Navigation("Childrens");
+
+                    b.Navigation("Parents");
+
+                    b.Navigation("SubjectEnrolled");
+
+                    b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Class", b =>
+                {
+                    b.Navigation("students");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.School", b =>
+                {
+                    b.Navigation("Stakeholders");
+                });
+
+            modelBuilder.Entity("UploadandDowloadService.Models.Subject", b =>
+                {
+                    b.Navigation("Contents");
+
+                    b.Navigation("StudentEnrolled");
+
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

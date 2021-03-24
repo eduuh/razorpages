@@ -8,13 +8,15 @@ using Microsoft.Extensions.Hosting;
 using UploadandDowloadService.Interface;
 using UploadandDowloadService.Models;
 using UploadandDowloadService.Infratructure;
-using UploadandDowloadService.Data;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using UploadandDowloadService.Areas.Identity;
+using System;
+using Microsoft.AspNetCore.Http;
 
 namespace UploadandDowloadService
 {
@@ -33,21 +35,22 @@ namespace UploadandDowloadService
 
 
             //configure mys sql connection
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
-                o => o.EnableRetryOnFailure()
-            ));
+            // services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+            //     Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
+            //     o => o.EnableRetryOnFailure()
+            // ));
 
-            // congiguring identity
-            var builder = services.AddIdentityCore<AppUser>();
-            var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            identitybuilder.AddRoles<IdentityRole>();
-            identitybuilder.AddEntityFrameworkStores<AppDbContext>();
-            identitybuilder.AddSignInManager<SignInManager<AppUser>>();
-
-
-            services.AddControllersWithViews();
-
+            // //congiguring identity
+            // var builder = services.AddIdentityCore<AppUser>();
+            // var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            // identitybuilder.AddRoles<IdentityRole>();
+            // identitybuilder.AddEntityFrameworkStores<AppDbContext>();
+            // identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+ 
+          //  services.AddRazorPages();
+            services.AddMvcCore().AddApiExplorer();
+            services.AddCors();
+               
             var openapisecurityscheme = new NSwag.OpenApiSecurityScheme();
             openapisecurityscheme.Type = NSwag.OpenApiSecuritySchemeType.ApiKey;
             openapisecurityscheme.Name = "Authorization Token";
@@ -59,7 +62,6 @@ namespace UploadandDowloadService
                 options.Title = "Kaizenblobservice";
                 options.DocumentName = "KaizenUploadDowload V1";
                 options.Description = "Kaizen upload and Dowload service internal Api";
-
                 options.AddSecurity("Bearer", Enumerable.Empty<string>(),  openapisecurityscheme);
             }
             );
@@ -69,6 +71,7 @@ namespace UploadandDowloadService
             services.AddSingleton<IBlobService, BlobService>();
 
             services.AddScoped<IJwtToken, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             // diffeernt instance
             services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
@@ -84,8 +87,21 @@ namespace UploadandDowloadService
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
                 opt.TokenValidationParameters = TokenValidationParameter;
+            }).AddCookie(IdentityConstants.ApplicationScheme,
+            o => {
+                o.Cookie.Expiration = TimeSpan.FromHours(8);
+                o.Cookie.SameSite = SameSiteMode.Strict;
+                o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+                o.AccessDeniedPath = new PathString("/");
+                o.ExpireTimeSpan = TimeSpan.FromHours(8);
+                o.LoginPath = new PathString("/sign-in");
+                o.LogoutPath = new PathString("/sign-out");
+                o.SlidingExpiration = true;
             });
 
+
+          services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,10 +129,7 @@ namespace UploadandDowloadService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+              //  endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }
