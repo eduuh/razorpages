@@ -8,8 +8,8 @@ namespace UploadandDowloadService.Models
       public string Id { get; set; }
       public string Name { get; set; }
       public int Age { get; set;}
-      public ICollection<AppUser> Parents { get; set;}
-      public ICollection<AppUser> Students { get; set; }
-      public ICollection<AppUser> Teachers {get; set;}
+       public ICollection<AppUser> Stakeholders {get; set;}
+     
+    
     }
 }

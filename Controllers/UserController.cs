@@ -49,6 +49,15 @@ namespace UploadandDowloadService.Controllers
         }
 
 
+        [HttpGet("user/me")]
+        public async Task<IActionResult> CurrentUser()
+        {
+            var result = await user.GetCurrentLoginDetails();
+
+            return Ok(result);
+        }
+
+
 
 
 

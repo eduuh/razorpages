@@ -71,6 +71,7 @@ namespace UploadandDowloadService
             services.AddSingleton<IBlobService, BlobService>();
 
             services.AddScoped<IJwtToken, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             // diffeernt instance
             services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
