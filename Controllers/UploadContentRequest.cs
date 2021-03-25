@@ -1,4 +1,4 @@
-namespace uploaddownloadfiles.Controllers
+namespace UploadandDowloadService.Controllers
 {
     public class UploadContentRequest
     {

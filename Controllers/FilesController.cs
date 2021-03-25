@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using uploaddownloadfiles.Interface;
+using UploadandDowloadService.Interface;
 
-namespace uploaddownloadfiles.Controllers
+namespace UploadandDowloadService.Controllers
 {
     public class FilesController : Controller
     {

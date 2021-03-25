@@ -1,14 +1,24 @@
+using System.Linq;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using uploaddownloadfiles.Interface;
-using uploaddownloadfiles.Models;
-using uploaddownloadfiles.Services;
+using UploadandDowloadService.Interface;
+using UploadandDowloadService.Models;
+using UploadandDowloadService.Infratructure;
+using Microsoft.EntityFrameworkCore;
+using UploadandDowloadService.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using System;
+using Microsoft.AspNetCore.Http;
+using UploadandDowloadService.Areas.Identity;
 
-namespace uploaddownloadfiles
+namespace UploadandDowloadService
 {
     public class Startup
     {
@@ -22,18 +32,72 @@ namespace uploaddownloadfiles
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+
+
+            //configure mys sql connection
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+             Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
+                o => o.EnableRetryOnFailure()
+             ));
+
+            // //congiguring identity
+            // var builder = services.AddIdentityCore<AppUser>();
+            // var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            // identitybuilder.AddRoles<IdentityRole>();
+            // identitybuilder.AddEntityFrameworkStores<AppDbContext>();
+            // identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+          //  services.AddRazorPages();
+
+            services.AddMvcCore().AddApiExplorer();
+            services.AddCors();
+               
+            var openapisecurityscheme = new NSwag.OpenApiSecurityScheme();
+            openapisecurityscheme.Type = NSwag.OpenApiSecuritySchemeType.ApiKey;
+            openapisecurityscheme.Name = "Authorization Token";
+            openapisecurityscheme.Description = "Bearer + valid jwt token into field";
+            openapisecurityscheme.In = NSwag.OpenApiSecurityApiKeyLocation.Header;
+
             services.AddSwaggerDocument(options =>
             {
                 options.Title = "Kaizenblobservice";
                 options.DocumentName = "KaizenUploadDowload V1";
                 options.Description = "Kaizen upload and Dowload service internal Api";
+                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  openapisecurityscheme);
             }
             );
-            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
 
-            services.AddSingleton(x => new BlobServiceClient(Configuration.GetValue<string>("AzureBlobStorageConnectionString")));
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
+            services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
             services.AddSingleton<IBlobService, BlobService>();
+            services.AddScoped<IJwtToken, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            // diffeernt instance
+            services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
+
+
+            
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokenkey"]));
+            var TokenValidationParameter = new TokenValidationParameters();
+            TokenValidationParameter.ValidateIssuerSigningKey = true;
+            TokenValidationParameter.IssuerSigningKey = key;
+            TokenValidationParameter.ValidateAudience = false;
+            TokenValidationParameter.ValidateIssuer = false;
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+                opt.TokenValidationParameters = TokenValidationParameter;
+            }).AddCookie(IdentityConstants.ApplicationScheme,
+            o => {
+                o.Cookie.Expiration = TimeSpan.FromHours(8);
+                o.Cookie.SameSite = SameSiteMode.Strict;
+                o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                o.AccessDeniedPath = new PathString("/");
+                o.ExpireTimeSpan = TimeSpan.FromHours(8);
+                o.LoginPath = new PathString("/sign-in");
+                o.LogoutPath = new PathString("/sign-out");
+                o.SlidingExpiration = true;
+            });
+
+          services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,17 +118,11 @@ namespace uploaddownloadfiles
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+              //  endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }
