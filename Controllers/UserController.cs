@@ -24,13 +24,7 @@ namespace UploadandDowloadService.Controllers
         {
             UserSuccessResponse result = await user.Login(userLogin);
 
-            if (result.Token != null) {
                  return new CustomActionResult<UserSuccessResponse>(result, HttpStatusCode.OK);
-            }
-            else
-            {
-                return new CustomActionResult<UserSuccessResponse>(result, HttpStatusCode.BadRequest);
-            };
         }
 
 

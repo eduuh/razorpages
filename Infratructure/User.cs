@@ -1,11 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Controllers;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 using UploadandDowloadService.Services;
+using uploaddownloadfiles.Models;
 
 namespace UploadandDowloadService.Infratructure
 {
@@ -48,16 +49,16 @@ namespace UploadandDowloadService.Infratructure
 
             if (user == null)
             {
-              // TODO create a error handler
-              throw new System.Exception("USER NOT FOUND");   
+                // TODO create a error handler
+                throw new RestException(System.Net.HttpStatusCode.Unauthorized, new { message = "Not Authorized"});
             }
 
             var result = await signinmanager.CheckPasswordSignInAsync(user, userlogin.Password, false);
 
-            if(result.Succeeded) return new UserSuccessResponse(user.Email, jwtgenerator.createToken(user), user.UserName);
+            if (result.Succeeded) return new UserSuccessResponse(user.Email, jwtgenerator.createToken(user), user.UserName);
 
-           return new UserSuccessResponse(null, null, null);
-            
+            throw new RestException(System.Net.HttpStatusCode.Unauthorized, new { message = "Please Use the correct Password" });
+
         }
 
         public async Task<UserSuccessResponse> Register(UserRegister userregister)
@@ -66,19 +67,22 @@ namespace UploadandDowloadService.Infratructure
             var Exist = await context.Users.AnyAsync(x => x.Email == userregister.Email || x.UserName == userregister.UserName);
             if(Exist){
                 //TODO use custom eror handler
-                throw new System.Exception("User Email or Username Is taken");
+                throw new RestException(System.Net.HttpStatusCode.BadRequest,"User Email or Username Is taken");
             }
-           
-           
+                
             var user = new AppUser() {
                 UserName = userregister.UserName,
                 Email = userregister.Email,
                 PhoneNumber = userregister.PhoneNumber,
             };
 
-          var role = userregister.Role;
           var result = await usermanager.CreateAsync(user, userregister.Password);
-          var ensurerole = await EnsureRole(user, (Role)Enum.Parse(typeof(Role),role));
+          var ensurerole = await EnsureRole(user, userregister.Role);
+            if (!ensurerole.Succeeded)
+            {
+                await usermanager.DeleteAsync(user);
+                throw new RestException(System.Net.HttpStatusCode.InternalServerError, new { message = "User registration not successfull Please Try again" });
+            }
 
           if (result.Succeeded)
           {
@@ -89,15 +93,17 @@ namespace UploadandDowloadService.Infratructure
         }
 
 
-        private async Task<IdentityResult> EnsureRole(AppUser user, Role role){
+        private async Task<IdentityResult> EnsureRole(AppUser user, string role){
             if(roleManager== null){
-                throw new System.Exception("Rolemanager Eror");
+                throw new RestException(System.Net.HttpStatusCode.NotFound,"Rolemanager Error");
             }
-            if(!await roleManager.RoleExistsAsync(role.ToString())){
-                throw new System.Exception("Role does not Exist");
+            if(!await roleManager.RoleExistsAsync(role)){
+
+                await roleManager.CreateAsync(new IdentityRole(role));
+               //Todo Precreate roles and activate this line =>  throw new RestException(System.Net.HttpStatusCode.NotFound,"Role does not Exist, either Student, Teacher, Admin");
             }
           
-          if(user == null) throw new System.Exception("The User is Not succeffuly registerd");
+          if(user == null) throw new RestException(System.Net.HttpStatusCode.NotFound,new { message = "The User is Not succeffuly registerd" });
           var ir = await usermanager.AddToRoleAsync(user, role.ToString());
 
           return ir;

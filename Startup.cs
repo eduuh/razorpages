@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Microsoft.AspNetCore.Http;
 using UploadandDowloadService.Areas.Identity;
+using uploaddownloadfiles.Middleware;
 
 namespace UploadandDowloadService
 {
@@ -103,6 +104,7 @@ namespace UploadandDowloadService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -115,6 +117,8 @@ namespace UploadandDowloadService
             }
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
