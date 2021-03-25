@@ -5,6 +5,7 @@ namespace UploadandDowloadService
        Admin,
        Teacher,
        Student,
-       Parent
+       Parent,
+       Manager
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using UploadandDowloadService.Controllers;
 using UploadandDowloadService.Models;
 
 namespace UploadandDowloadService.Areas.Identity
@@ -16,6 +17,10 @@ namespace UploadandDowloadService.Areas.Identity
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Content> Contents { get; set; }
 
+        public DbSet<Contact> Contacts {get; set;}
+
+        public DbSet<TrainingSubject> TrainingContents {get; set;}
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -28,6 +33,8 @@ namespace UploadandDowloadService.Areas.Identity
             // teacher and subject
             builder.Entity<AppUser>().HasMany(s => s.Subjects).WithOne(s => s.Teacher);
             // class and  classrep
+            
+            builder.Entity<TrainingSubject>().HasMany(s => s.Contents).WithOne(s=> s.TraingSubject);
 
          //   builder.Entity<Class>().HasMany(s => s.ClassRep).WithOne(s => s.Class);
 

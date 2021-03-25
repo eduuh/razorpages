@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Areas.Identity.Data;
 
 namespace UploadandDowloadService
 {
@@ -19,7 +20,11 @@ namespace UploadandDowloadService
                try {
                    var context = service.GetRequiredService<AppDbContext>();
                    context.Database.Migrate();
-               } catch(Exception){}
+
+                 SeedData.Initialize(service, "Pa$$w0rd").Wait();
+               } catch(Exception ex){
+                   Console.WriteLine(ex);
+               }
             }
             CreateHostBuilder(args).Build().Run();
         }
