@@ -14,6 +14,8 @@ namespace UploadandDowloadService.Models
      public bool isRep {get; set;} = false;
      public School School { get; set; }
 
+     public Contact Contact { get; set; }
+
      public ICollection<Subject> Subjects {get; set;}
      public ICollection<StudentSubjectEnrolled> SubjectEnrolled {get; set;}
      public ICollection<StudentParent> Parents {get; set;}

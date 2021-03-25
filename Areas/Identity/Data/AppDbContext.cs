@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using UploadandDowloadService.Controllers;
 using UploadandDowloadService.Models;
 
 namespace UploadandDowloadService.Areas.Identity
@@ -15,7 +16,8 @@ namespace UploadandDowloadService.Areas.Identity
         public DbSet<Class> Classes { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Content> Contents { get; set; }
-
+        public DbSet<Contact> Contacts {get; set;}
+        public DbSet<TrainingSubject> TrainingContents {get; set;}
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -28,6 +30,8 @@ namespace UploadandDowloadService.Areas.Identity
             // teacher and subject
             builder.Entity<AppUser>().HasMany(s => s.Subjects).WithOne(s => s.Teacher);
             // class and  classrep
+            
+            builder.Entity<TrainingSubject>().HasMany(s => s.Contents).WithOne(s=> s.TraingSubject);
 
          //   builder.Entity<Class>().HasMany(s => s.ClassRep).WithOne(s => s.Class);
 
@@ -46,8 +50,8 @@ namespace UploadandDowloadService.Areas.Identity
            // This is self referencing entity
 
            builder.Entity<StudentParent>(x => x.HasKey( sp => new {sp.ParentId, sp.StudentId}));
-           builder.Entity<StudentParent>().HasOne(s => s.Student).WithMany(x => x.Parents).HasForeignKey(x => x.StudentId);
-           builder.Entity<StudentParent>().HasOne(s => s.Parent).WithMany(x => x.Childrens).HasForeignKey(x => x.ParentId);
+           builder.Entity<StudentParent>().HasOne(s => s.Student).WithMany(x => x.Parents).HasForeignKey(x => x.StudentId).OnDelete(DeleteBehavior.Restrict);
+           builder.Entity<StudentParent>().HasOne(s => s.Parent).WithMany(x => x.Childrens).HasForeignKey(x => x.ParentId).OnDelete(DeleteBehavior.Restrict);
 
 
         }

@@ -14,9 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using UploadandDowloadService.Areas.Identity;
 using System;
 using Microsoft.AspNetCore.Http;
+using UploadandDowloadService.Areas.Identity;
 
 namespace UploadandDowloadService
 {
@@ -35,10 +35,10 @@ namespace UploadandDowloadService
 
 
             //configure mys sql connection
-            // services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-            //     Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
-            //     o => o.EnableRetryOnFailure()
-            // ));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+             Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
+                o => o.EnableRetryOnFailure()
+             ));
 
             // //congiguring identity
             // var builder = services.AddIdentityCore<AppUser>();
@@ -46,8 +46,8 @@ namespace UploadandDowloadService
             // identitybuilder.AddRoles<IdentityRole>();
             // identitybuilder.AddEntityFrameworkStores<AppDbContext>();
             // identitybuilder.AddSignInManager<SignInManager<AppUser>>();
- 
           //  services.AddRazorPages();
+
             services.AddMvcCore().AddApiExplorer();
             services.AddCors();
                
@@ -65,14 +65,12 @@ namespace UploadandDowloadService
                 options.AddSecurity("Bearer", Enumerable.Empty<string>(),  openapisecurityscheme);
             }
             );
-            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
 
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
             services.AddSingleton<IBlobService, BlobService>();
-
             services.AddScoped<IJwtToken, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
-
             // diffeernt instance
             services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
 
@@ -92,14 +90,12 @@ namespace UploadandDowloadService
                 o.Cookie.Expiration = TimeSpan.FromHours(8);
                 o.Cookie.SameSite = SameSiteMode.Strict;
                 o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-
                 o.AccessDeniedPath = new PathString("/");
                 o.ExpireTimeSpan = TimeSpan.FromHours(8);
                 o.LoginPath = new PathString("/sign-in");
                 o.LogoutPath = new PathString("/sign-out");
                 o.SlidingExpiration = true;
             });
-
 
           services.AddAuthorization();
         }
@@ -122,11 +118,8 @@ namespace UploadandDowloadService
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
               //  endpoints.MapRazorPages();
