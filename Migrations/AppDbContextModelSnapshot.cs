@@ -524,13 +524,13 @@ namespace uploaddownloadfiles.Migrations
                     b.HasOne("UploadandDowloadService.Models.AppUser", "Parent")
                         .WithMany("Childrens")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("UploadandDowloadService.Models.AppUser", "Student")
                         .WithMany("Parents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Parent");

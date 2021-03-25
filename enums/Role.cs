@@ -2,8 +2,8 @@ namespace UploadandDowloadService
 {
     public enum Role
     {
-       Admin,
-       Teacher,
+       Admin ,
+       Teacher ,
        Student,
        Parent,
        Manager

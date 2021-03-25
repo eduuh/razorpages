@@ -21,7 +21,7 @@ namespace UploadandDowloadService
                    var context = service.GetRequiredService<AppDbContext>();
                    context.Database.Migrate();
 
-                 SeedData.Initialize(service, "Pa$$w0rd").Wait();
+                 SeedData.Initialize(service, "Pa$$w0rd54").Wait();
                } catch(Exception ex){
                    Console.WriteLine(ex);
                }
