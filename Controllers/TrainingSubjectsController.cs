@@ -30,7 +30,7 @@ namespace uploaddownloadfiles.Controllers
 
         // GET: api/TrainingSubjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TrainingSubject>> GetTrainingSubject(string id)
+        public async Task<ActionResult<TrainingSubject>> GetTrainingSubject([FromQuery]string id)
         {
             var trainingSubject = await _context.TrainingContents.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace uploaddownloadfiles.Controllers
         // PUT: api/TrainingSubjects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTrainingSubject(string id, TrainingSubject trainingSubject)
+        public async Task<IActionResult> PutTrainingSubject([FromQuery]string id, [FromBody]TrainingSubject trainingSubject)
         {
             if (id != trainingSubject.Id)
             {
@@ -76,7 +76,7 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/TrainingSubjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TrainingSubject>> PostTrainingSubject(TrainingSubject trainingSubject)
+        public async Task<ActionResult<TrainingSubject>> PostTrainingSubject([FromBody]TrainingSubject trainingSubject)
         {
             _context.TrainingContents.Add(trainingSubject);
             try
@@ -100,7 +100,7 @@ namespace uploaddownloadfiles.Controllers
 
         // DELETE: api/TrainingSubjects/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTrainingSubject(string id)
+        public async Task<IActionResult> DeleteTrainingSubject([FromQuery]string id)
         {
             var trainingSubject = await _context.TrainingContents.FindAsync(id);
             if (trainingSubject == null)

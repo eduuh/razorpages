@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using UploadandDowloadService.Controllers;
 using UploadandDowloadService.Dto;
+using UploadandDowloadService.Models;
 
 namespace UploadandDowloadService.Services
 {
@@ -8,6 +9,6 @@ namespace UploadandDowloadService.Services
     {
          Task<UserSuccessResponse> Login(UserLogin userlogin);
          Task<UserSuccessResponse> Register(UserRegister userregister);
-        Task<AppuserDto> GetCurrentLoginDetails();
+        Task<AppUser> GetCurrentLoginDetails();
     }
 }

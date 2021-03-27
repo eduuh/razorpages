@@ -31,16 +31,10 @@ namespace UploadandDowloadService.Infratructure
             this.roleManager = roleManager;
         }
 
-        public async Task<AppuserDto> GetCurrentLoginDetails()
+        public async Task<AppUser> GetCurrentLoginDetails()
         {
           var user =  await usermanager.FindByNameAsync(userAccessor.GetCurrentUsername());
-          return new AppuserDto{
-              LastName = user.LastName,
-              FirstName = user.FirstName,
-              UserName = user.UserName,
-              PhonNumber = user.PhoneNumber,
-              Email  = user.Email
-          };
+           return user;  //TODO configurer nmap
         }
 
         public async Task<UserSuccessResponse> Login(UserLogin userlogin)
