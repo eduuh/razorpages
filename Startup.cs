@@ -78,7 +78,13 @@ namespace UploadandDowloadService
             TokenValidationParameter.ValidateIssuer = false;
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
-                opt.TokenValidationParameters = TokenValidationParameter;
+                opt.TokenValidationParameters =  new TokenValidationParameters() {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+
+                };
              }); //.AddCookie(IdentityConstants.ApplicationScheme,
             // o => {
             //     o.Cookie.Expiration = TimeSpan.FromHours(8);
@@ -91,18 +97,17 @@ namespace UploadandDowloadService
             //     o.SlidingExpiration = true;
             // });
 
-            var apisecurityscheme = new OpenApiSecurityScheme();
-            apisecurityscheme.Type = OpenApiSecuritySchemeType.ApiKey;
-            apisecurityscheme.Name = "Authorization";
-            apisecurityscheme.Description = "Bearer + valid jwt token into field";
-            apisecurityscheme.In = OpenApiSecurityApiKeyLocation.Header;
-
             services.AddSwaggerDocument(options =>
             {
                 options.Title = "Kaizenblobservice";
                 options.DocumentName = "KaizenUploadDowload V1";
                 options.Description = "Kaizen upload and Dowload service internal Api";
-                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  apisecurityscheme);
+                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  new OpenApiSecurityScheme {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    Description = "Bearer + valid jwt token into field",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                });
             }
             );
 
@@ -131,6 +136,7 @@ namespace UploadandDowloadService
             app.UseStaticFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

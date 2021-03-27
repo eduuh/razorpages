@@ -38,7 +38,7 @@ namespace UploadandDowloadService.Controllers
            return Ok(result);
         }
 
-
+        [Authorize]
         [HttpGet("user/me")]
         public async Task<ActionResult<AppUser>> CurrentUser()
         {
