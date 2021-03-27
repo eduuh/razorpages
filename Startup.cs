@@ -18,6 +18,9 @@ using System;
 using Microsoft.AspNetCore.Http;
 using UploadandDowloadService.Areas.Identity;
 using uploaddownloadfiles.Middleware;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using NSwag;
 
 namespace UploadandDowloadService
 {
@@ -41,6 +44,11 @@ namespace UploadandDowloadService
                 o => o.EnableRetryOnFailure()
              ));
 
+             services.AddControllers( opt => {
+                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                 opt.Filters.Add(new AuthorizeFilter(policy));
+             });
+
             // //congiguring identity
             // var builder = services.AddIdentityCore<AppUser>();
             // var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
@@ -49,23 +57,8 @@ namespace UploadandDowloadService
             // identitybuilder.AddSignInManager<SignInManager<AppUser>>();
           //  services.AddRazorPages();
 
-            services.AddMvcCore().AddApiExplorer();
             services.AddCors();
                
-            var openapisecurityscheme = new NSwag.OpenApiSecurityScheme();
-            openapisecurityscheme.Type = NSwag.OpenApiSecuritySchemeType.ApiKey;
-            openapisecurityscheme.Name = "Authorization Token";
-            openapisecurityscheme.Description = "Bearer + valid jwt token into field";
-            openapisecurityscheme.In = NSwag.OpenApiSecurityApiKeyLocation.Header;
-
-            services.AddSwaggerDocument(options =>
-            {
-                options.Title = "Kaizenblobservice";
-                options.DocumentName = "KaizenUploadDowload V1";
-                options.Description = "Kaizen upload and Dowload service internal Api";
-                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  openapisecurityscheme);
-            }
-            );
 
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
@@ -86,19 +79,33 @@ namespace UploadandDowloadService
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
                 opt.TokenValidationParameters = TokenValidationParameter;
-            }).AddCookie(IdentityConstants.ApplicationScheme,
-            o => {
-                o.Cookie.Expiration = TimeSpan.FromHours(8);
-                o.Cookie.SameSite = SameSiteMode.Strict;
-                o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                o.AccessDeniedPath = new PathString("/");
-                o.ExpireTimeSpan = TimeSpan.FromHours(8);
-                o.LoginPath = new PathString("/sign-in");
-                o.LogoutPath = new PathString("/sign-out");
-                o.SlidingExpiration = true;
-            });
+             }); //.AddCookie(IdentityConstants.ApplicationScheme,
+            // o => {
+            //     o.Cookie.Expiration = TimeSpan.FromHours(8);
+            //     o.Cookie.SameSite = SameSiteMode.Strict;
+            //     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            //     o.AccessDeniedPath = new PathString("/");
+            //     o.ExpireTimeSpan = TimeSpan.FromHours(8);
+            //     o.LoginPath = new PathString("/sign-in");
+            //     o.LogoutPath = new PathString("/sign-out");
+            //     o.SlidingExpiration = true;
+            // });
 
-          services.AddAuthorization();
+            var apisecurityscheme = new OpenApiSecurityScheme();
+            apisecurityscheme.Type = OpenApiSecuritySchemeType.ApiKey;
+            apisecurityscheme.Name = "Authorization";
+            apisecurityscheme.Description = "Bearer + valid jwt token into field";
+            apisecurityscheme.In = OpenApiSecurityApiKeyLocation.Header;
+
+            services.AddSwaggerDocument(options =>
+            {
+                options.Title = "Kaizenblobservice";
+                options.DocumentName = "KaizenUploadDowload V1";
+                options.Description = "Kaizen upload and Dowload service internal Api";
+                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  apisecurityscheme);
+            }
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +124,7 @@ namespace UploadandDowloadService
             }
             app.UseOpenApi();
             app.UseSwaggerUi3();
+           // app.UseSwaggerUi3();       
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();

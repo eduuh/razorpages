@@ -1,13 +1,16 @@
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Filters;
+using UploadandDowloadService.Models;
 using UploadandDowloadService.Services;
+using uploaddownloadfiles.Models;
 
 namespace UploadandDowloadService.Controllers
 {
-
+    [AllowAnonymous]
     [ApiController]
     public class UserController : Controller
     {
@@ -20,34 +23,26 @@ namespace UploadandDowloadService.Controllers
         }
 
         [HttpPost("user/login")]
-        public async Task<CustomActionResult<UserSuccessResponse>> Login(UserLogin userLogin)
+        public async Task<ActionResult<UserSuccessResponse>> Login([FromBody]UserLogin userLogin)
         {
             UserSuccessResponse result = await user.Login(userLogin);
 
-                 return new CustomActionResult<UserSuccessResponse>(result, HttpStatusCode.OK);
+                 return Ok(result);
         }
 
 
         [HttpPost("user/register")]
-        public async Task<CustomActionResult<UserSuccessResponse>> Register(UserRegister userRegister)
+        public async Task<ActionResult<UserSuccessResponse>> Register([FromBody]UserRegister userRegister)
         {
             var result = await user.Register(userRegister);
-
-            if (result.Token != null) {
-               return new CustomActionResult<UserSuccessResponse>(result, HttpStatusCode.OK);
-             }
-            else
-            {
-                return new CustomActionResult<UserSuccessResponse>(result, HttpStatusCode.BadRequest);
-            };
+           return Ok(result);
         }
 
 
         [HttpGet("user/me")]
-        public async Task<IActionResult> CurrentUser()
+        public async Task<ActionResult<AppUser>> CurrentUser()
         {
             var result = await user.GetCurrentLoginDetails();
-
             return Ok(result);
         }
 
