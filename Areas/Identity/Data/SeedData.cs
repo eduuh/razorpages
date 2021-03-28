@@ -25,7 +25,7 @@ namespace UploadandDowloadService.Areas.Identity.Data
             var user = await usermananger.FindByNameAsync(username);
             if(user==null){
                 user = new AppUser {
-                    UserName = "eduuh",
+                    UserName = username,
                     EmailConfirmed = true,
                 };
                 await usermananger.CreateAsync(user, testUserPw);

@@ -43,8 +43,9 @@ namespace UploadandDowloadService
              Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
                 o => o.EnableRetryOnFailure()
              ));
+          
 
-             services.AddControllers( opt => {
+            services.AddControllers( opt => {
                  var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                  opt.Filters.Add(new AuthorizeFilter(policy));
              });
@@ -58,7 +59,7 @@ namespace UploadandDowloadService
           //  services.AddRazorPages();
 
             services.AddCors();
-               
+           
 
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
@@ -85,17 +86,18 @@ namespace UploadandDowloadService
                     ValidateIssuer = false,
 
                 };
-             }); //.AddCookie(IdentityConstants.ApplicationScheme,
-            // o => {
-            //     o.Cookie.Expiration = TimeSpan.FromHours(8);
-            //     o.Cookie.SameSite = SameSiteMode.Strict;
-            //     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //     o.AccessDeniedPath = new PathString("/");
-            //     o.ExpireTimeSpan = TimeSpan.FromHours(8);
-            //     o.LoginPath = new PathString("/sign-in");
-            //     o.LogoutPath = new PathString("/sign-out");
-            //     o.SlidingExpiration = true;
-            // });
+            }).AddCookie(IdentityConstants.ApplicationScheme,
+            o =>
+            {
+                o.Cookie.Expiration = TimeSpan.FromHours(8);
+                o.Cookie.SameSite = SameSiteMode.Strict;
+                o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                o.AccessDeniedPath = new PathString("/");
+                o.ExpireTimeSpan = TimeSpan.FromHours(8);
+                o.LoginPath = new PathString("/sign-in");
+                o.LogoutPath = new PathString("/sign-out");
+                o.SlidingExpiration = true;
+            });
 
             services.AddSwaggerDocument(options =>
             {
@@ -110,6 +112,9 @@ namespace UploadandDowloadService
                 });
             }
             );
+        
+            services.AddRazorPages();
+
 
         }
 
@@ -134,15 +139,21 @@ namespace UploadandDowloadService
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseDefaultFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+          
+
             app.UseEndpoints(endpoints =>
             {
-              //  endpoints.MapRazorPages();
-                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();  
             });
+              
         }
     }
 }
