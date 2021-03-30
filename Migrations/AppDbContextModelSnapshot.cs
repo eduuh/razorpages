@@ -165,8 +165,8 @@ namespace uploaddownloadfiles.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("int");
+                    b.Property<string>("ContactId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -264,17 +264,21 @@ namespace uploaddownloadfiles.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SchoolId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("UploadandDowloadService.Models.Contact", b =>
                 {
-                    b.Property<int>("ContactId")
+                    b.Property<string>("ContactId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -302,6 +306,7 @@ namespace uploaddownloadfiles.Migrations
             modelBuilder.Entity("UploadandDowloadService.Models.Content", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BlobUrl")
@@ -337,13 +342,14 @@ namespace uploaddownloadfiles.Migrations
             modelBuilder.Entity("UploadandDowloadService.Models.School", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<string>("ContactId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("int");
+                    b.Property<string>("Motto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -388,15 +394,21 @@ namespace uploaddownloadfiles.Migrations
             modelBuilder.Entity("UploadandDowloadService.Models.Subject", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClassId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TotalMarks")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
 
                     b.HasIndex("TeacherId");
 
@@ -406,6 +418,7 @@ namespace uploaddownloadfiles.Migrations
             modelBuilder.Entity("UploadandDowloadService.Models.TrainingSubject", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ContentTarget")
@@ -495,6 +508,15 @@ namespace uploaddownloadfiles.Migrations
                     b.Navigation("School");
                 });
 
+            modelBuilder.Entity("UploadandDowloadService.Models.Class", b =>
+                {
+                    b.HasOne("UploadandDowloadService.Models.School", "School")
+                        .WithMany("Classes")
+                        .HasForeignKey("SchoolId");
+
+                    b.Navigation("School");
+                });
+
             modelBuilder.Entity("UploadandDowloadService.Models.Content", b =>
                 {
                     b.HasOne("UploadandDowloadService.Models.Subject", "Subject")
@@ -559,9 +581,15 @@ namespace uploaddownloadfiles.Migrations
 
             modelBuilder.Entity("UploadandDowloadService.Models.Subject", b =>
                 {
+                    b.HasOne("UploadandDowloadService.Models.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId");
+
                     b.HasOne("UploadandDowloadService.Models.AppUser", "Teacher")
                         .WithMany("Subjects")
                         .HasForeignKey("TeacherId");
+
+                    b.Navigation("Class");
 
                     b.Navigation("Teacher");
                 });
@@ -584,6 +612,8 @@ namespace uploaddownloadfiles.Migrations
 
             modelBuilder.Entity("UploadandDowloadService.Models.School", b =>
                 {
+                    b.Navigation("Classes");
+
                     b.Navigation("Stakeholders");
                 });
 

@@ -1,17 +1,22 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UploadandDowloadService.Models
 {
     public class School
     {
-    
-      public string Id { get; set; }
-      public string Name { get; set; }
-      public int Age { get; set;}
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-      public  Contact Contact { get; set; }
-       public ICollection<AppUser> Stakeholders {get; set;}
-     
-    
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Motto { get; set; }
+
+        public Contact Contact { get; set; }
+        public ICollection<AppUser> Stakeholders { get; set; }
+        public ICollection<Class> Classes { get; set; }
+
+
     }
 }

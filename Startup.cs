@@ -21,6 +21,8 @@ using uploaddownloadfiles.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using NSwag;
+using uploaddownloadfiles.Areas.Identity.Data;
+using uploaddownloadfiles.Background;
 
 namespace UploadandDowloadService
 {
@@ -44,21 +46,24 @@ namespace UploadandDowloadService
                 o => o.EnableRetryOnFailure()
              ));
 
-             services.AddControllers( opt => {
-                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                 opt.Filters.Add(new AuthorizeFilter(policy));
-             });
+
+            services.AddControllers(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             // //congiguring identity
-            // var builder = services.AddIdentityCore<AppUser>();
-            // var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            // identitybuilder.AddRoles<IdentityRole>();
-            // identitybuilder.AddEntityFrameworkStores<AppDbContext>();
-            // identitybuilder.AddSignInManager<SignInManager<AppUser>>();
-          //  services.AddRazorPages();
+            var builder = services.AddIdentityCore<AppUser>();
+            var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identitybuilder.AddRoles<IdentityRole>();
+            identitybuilder.AddEntityFrameworkStores<AppDbContext>();
+            identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+            //  services.AddRazorPages();
 
             services.AddCors();
-               
+            services.AddAutoMapper(typeof(Startup));
+
 
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
@@ -69,7 +74,7 @@ namespace UploadandDowloadService
             services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
 
 
-            
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokenkey"]));
             var TokenValidationParameter = new TokenValidationParameters();
             TokenValidationParameter.ValidateIssuerSigningKey = true;
@@ -77,32 +82,36 @@ namespace UploadandDowloadService
             TokenValidationParameter.ValidateAudience = false;
             TokenValidationParameter.ValidateIssuer = false;
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
-                opt.TokenValidationParameters =  new TokenValidationParameters() {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
                     ValidateAudience = false,
                     ValidateIssuer = false,
 
                 };
-             }); //.AddCookie(IdentityConstants.ApplicationScheme,
-            // o => {
-            //     o.Cookie.Expiration = TimeSpan.FromHours(8);
-            //     o.Cookie.SameSite = SameSiteMode.Strict;
-            //     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //     o.AccessDeniedPath = new PathString("/");
-            //     o.ExpireTimeSpan = TimeSpan.FromHours(8);
-            //     o.LoginPath = new PathString("/sign-in");
-            //     o.LogoutPath = new PathString("/sign-out");
-            //     o.SlidingExpiration = true;
-            // });
+            }).AddCookie(IdentityConstants.ApplicationScheme,
+            o =>
+            {
+                o.Cookie.Expiration = TimeSpan.FromHours(8);
+                o.Cookie.SameSite = SameSiteMode.Strict;
+                o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                o.AccessDeniedPath = new PathString("/");
+                o.ExpireTimeSpan = TimeSpan.FromHours(8);
+                o.LoginPath = new PathString("/sign-in");
+                o.LogoutPath = new PathString("/sign-out");
+                o.SlidingExpiration = true;
+            });
 
             services.AddSwaggerDocument(options =>
             {
                 options.Title = "Kaizenblobservice";
                 options.DocumentName = "KaizenUploadDowload V1";
                 options.Description = "Kaizen upload and Dowload service internal Api";
-                options.AddSecurity("Bearer", Enumerable.Empty<string>(),  new OpenApiSecurityScheme {
+                options.AddSecurity("Bearer", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                {
                     Type = OpenApiSecuritySchemeType.ApiKey,
                     Name = "Authorization",
                     Description = "Bearer + valid jwt token into field",
@@ -111,9 +120,12 @@ namespace UploadandDowloadService
             }
             );
 
+            // services.AddHostedService<SeedDataHostedService>();
+            services.AddRazorPages();
+
+
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
@@ -124,25 +136,30 @@ namespace UploadandDowloadService
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseOpenApi();
             app.UseSwaggerUi3();
-           // app.UseSwaggerUi3();       
+            // app.UseSwaggerUi3();       
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseDefaultFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+
             app.UseEndpoints(endpoints =>
             {
-              //  endpoints.MapRazorPages();
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
+
         }
     }
 }

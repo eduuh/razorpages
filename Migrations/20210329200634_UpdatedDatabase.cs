@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace uploaddownloadfiles.Migrations
 {
-    public partial class DatabaseDesign : Migration
+    public partial class UpdatedDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,8 +38,7 @@ namespace uploaddownloadfiles.Migrations
                 name: "Contacts",
                 columns: table => new
                 {
-                    ContactId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContactId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -92,8 +91,8 @@ namespace uploaddownloadfiles.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    ContactId = table.Column<int>(type: "int", nullable: true)
+                    Motto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -196,12 +195,19 @@ namespace uploaddownloadfiles.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    TotalMarks = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClassId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subjects_Classes_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Classes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,7 +222,7 @@ namespace uploaddownloadfiles.Migrations
                     isParent = table.Column<bool>(type: "bit", nullable: false),
                     isRep = table.Column<bool>(type: "bit", nullable: false),
                     SchoolId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ContactId = table.Column<int>(type: "int", nullable: true),
+                    ContactId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ClassId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SubjectId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -378,6 +384,11 @@ namespace uploaddownloadfiles.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Subjects_ClassId",
+                table: "Subjects",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Subjects_TeacherId",
                 table: "Subjects",
                 column: "TeacherId");
@@ -495,9 +506,6 @@ namespace uploaddownloadfiles.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Classes");
-
-            migrationBuilder.DropTable(
                 name: "Schools");
 
             migrationBuilder.DropTable(
@@ -505,6 +513,9 @@ namespace uploaddownloadfiles.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contacts");
+
+            migrationBuilder.DropTable(
+                name: "Classes");
         }
     }
 }
