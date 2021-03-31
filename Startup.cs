@@ -21,8 +21,6 @@ using uploaddownloadfiles.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using NSwag;
-using uploaddownloadfiles.Areas.Identity.Data;
-using uploaddownloadfiles.Background;
 
 namespace UploadandDowloadService
 {
@@ -41,10 +39,14 @@ namespace UploadandDowloadService
 
 
             //configure mys sql connection
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-             Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
-                o => o.EnableRetryOnFailure()
-             ));
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(
+                Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
+                   o => o.EnableRetryOnFailure()
+                );
+                options.UseLazyLoadingProxies();
+            });
 
 
             services.AddControllers(opt =>

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Dto.MappingProfiles;
 using UploadandDowloadService.Models;
 
 namespace uploaddownloadfiles.Controllers
@@ -15,22 +17,24 @@ namespace uploaddownloadfiles.Controllers
     public class SubjectsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper mapper;
 
-        public SubjectsController(AppDbContext context)
+        public SubjectsController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: api/Subjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects()
+        public async Task<ActionResult<IEnumerable<SubjectsDtos>>> GetSubjects()
         {
-            return await _context.Subjects.ToListAsync();
+            var subjects = await _context.Subjects.ToListAsync();
+            return mapper.Map<List<Subject>, List<SubjectsDtos>>(subjects);
         }
 
-        // GET: api/Subjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Subject>> GetSubject(string id)
+        public async Task<ActionResult<SubjectsDtos>> GetSubject(string id)
         {
             var subject = await _context.Subjects.FindAsync(id);
 
@@ -39,14 +43,15 @@ namespace uploaddownloadfiles.Controllers
                 return NotFound();
             }
 
-            return subject;
+            return mapper.Map<Subject, SubjectsDtos>(subject);
         }
 
         // PUT: api/Subjects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubject(string id, Subject subject)
+        public async Task<IActionResult> PutSubject(string id, SubjectsDtos subjectdto)
         {
+            var subject = mapper.Map<SubjectsDtos, Subject>(subjectdto);
             if (id != subject.Id)
             {
                 return BadRequest();
@@ -76,8 +81,10 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Subjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
+        public async Task<ActionResult<Subject>> PostSubject(SubjectsDtos subjectdto)
         {
+
+            var subject = mapper.Map<SubjectsDtos, Subject>(subjectdto);
             _context.Subjects.Add(subject);
             try
             {

@@ -17,17 +17,19 @@ namespace UploadandDowloadService.Areas.Identity.Data
                 var adminID = await EnsureUser(provider, testuserpw,
                  new AppUser
                  {
-                     UserName = "admin@contoso.com",
+                     Email = "admin@contoso.com",
                      FirstName = "Admin",
                      LastName = "Kaizen",
+                     UserName = "admin"
                  });
                 await EnsureRole(provider, adminID, Role.Admin);
 
                 var managerId = await EnsureUser(provider, testuserpw, new AppUser
                 {
-                    UserName = "management@contoso.com",
+                    Email = "management@contoso.com",
                     FirstName = "Management",
                     LastName = "Kaizen",
+                    UserName = "kaizen"
                 });
                 await EnsureRole(provider, managerId, Role.Manager);
             }

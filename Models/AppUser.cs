@@ -6,23 +6,23 @@ namespace UploadandDowloadService.Models
 {
     public class AppUser : IdentityUser
     {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-     public bool isStudent { get; set; } = false;
-     public bool isTeacher { get; set; } = false;
-     public bool isParent {get; set;} = false;
-     public bool isRep {get; set;} = false;
-     public School School { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool isStudent { get; set; } = false;
+        public bool isTeacher { get; set; } = false;
+        public bool isParent { get; set; } = false;
+        public bool isRep { get; set; } = false;
+        public virtual School School { get; set; }
 
-     public Contact Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
-     public ICollection<Subject> Subjects {get; set;}
-     public ICollection<StudentSubjectEnrolled> SubjectEnrolled {get; set;}
-     public ICollection<StudentParent> Parents {get; set;}
-     public ICollection<StudentParent> Childrens {get; set;}
-     public Class Class {get; set;}
+        public virtual ICollection<Subject> Subjects { get; set; }
+        public virtual ICollection<StudentSubjectEnrolled> SubjectEnrolled { get; set; }
+        public virtual ICollection<StudentParent> Parents { get; set; }
+        public virtual ICollection<StudentParent> Childrens { get; set; }
+        public virtual Class Class { get; set; }
 
-    public Role Type
+        public Role Type
         {
             get
             {

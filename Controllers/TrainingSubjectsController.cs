@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 
 namespace uploaddownloadfiles.Controllers
@@ -15,22 +17,25 @@ namespace uploaddownloadfiles.Controllers
     public class TrainingSubjectsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper mapper;
 
-        public TrainingSubjectsController(AppDbContext context)
+        public TrainingSubjectsController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: api/TrainingSubjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TrainingSubject>>> GetTrainingContents()
+        public async Task<ActionResult<IEnumerable<TrainingContentDto>>> GetTrainingContents()
         {
-            return await _context.TrainingContents.ToListAsync();
+            var traincontent = await _context.TrainingContents.ToListAsync();
+            return mapper.Map<List<TrainingSubject>, List<TrainingContentDto>>(traincontent);
         }
 
         // GET: api/TrainingSubjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TrainingSubject>> GetTrainingSubject([FromQuery]string id)
+        public async Task<ActionResult<TrainingContentDto>> GetTrainingSubject([FromQuery] string id)
         {
             var trainingSubject = await _context.TrainingContents.FindAsync(id);
 
@@ -39,20 +44,22 @@ namespace uploaddownloadfiles.Controllers
                 return NotFound();
             }
 
-            return trainingSubject;
+            return mapper.Map<TrainingSubject, TrainingContentDto>(trainingSubject);
         }
 
         // PUT: api/TrainingSubjects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTrainingSubject([FromQuery]string id, [FromBody]TrainingSubject trainingSubject)
+        public async Task<IActionResult> PutTrainingSubject([FromQuery] string id, [FromBody] TrainingContentDto trainingSubject)
         {
             if (id != trainingSubject.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(trainingSubject).State = EntityState.Modified;
+            var mapped = mapper.Map<TrainingContentDto, TrainingSubject>(trainingSubject);
+
+            _context.Entry(mapped).State = EntityState.Modified;
 
             try
             {
@@ -76,16 +83,17 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/TrainingSubjects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TrainingSubject>> PostTrainingSubject([FromBody]TrainingSubject trainingSubject)
+        public async Task<ActionResult<TrainingSubject>> PostTrainingSubject([FromBody] TrainingContentDto trainingSubject)
         {
-            _context.TrainingContents.Add(trainingSubject);
+            var trainsub = mapper.Map<TrainingContentDto, TrainingSubject>(trainingSubject);
+            _context.TrainingContents.Add(trainsub);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (TrainingSubjectExists(trainingSubject.Id))
+                if (TrainingSubjectExists(trainsub.Id))
                 {
                     return Conflict();
                 }
@@ -95,12 +103,12 @@ namespace uploaddownloadfiles.Controllers
                 }
             }
 
-            return CreatedAtAction("GetTrainingSubject", new { id = trainingSubject.Id }, trainingSubject);
+            return CreatedAtAction("GetTrainingSubject", new { id = trainsub.Id }, trainingSubject);
         }
 
         // DELETE: api/TrainingSubjects/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTrainingSubject([FromQuery]string id)
+        public async Task<IActionResult> DeleteTrainingSubject([FromQuery] string id)
         {
             var trainingSubject = await _context.TrainingContents.FindAsync(id);
             if (trainingSubject == null)

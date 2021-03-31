@@ -15,18 +15,26 @@ namespace UploadandDowloadService.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<AppDbContext>(options =>
+                {
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("AzureSqlServiceConnectionString"),
-                        o => o.EnableRetryOnFailure()));
+                        o => o.EnableRetryOnFailure());
 
- 
-            var builder = services.AddIdentityCore<AppUser>();
-            var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            identitybuilder.AddRoles<IdentityRole>();
-            identitybuilder.AddEntityFrameworkStores<AppDbContext>();
-            identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+                    options.UseLazyLoadingProxies();
+                }
+
+                        );
+
+
+
+                var builder = services.AddIdentityCore<AppUser>();
+                var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
+                identitybuilder.AddRoles<IdentityRole>();
+                identitybuilder.AddEntityFrameworkStores<AppDbContext>();
+                identitybuilder.AddSignInManager<SignInManager<AppUser>>();
 
             });
         }

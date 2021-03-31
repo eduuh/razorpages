@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 
 namespace uploaddownloadfiles.Controllers
@@ -15,22 +15,25 @@ namespace uploaddownloadfiles.Controllers
     public class ClassesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper mapper;
 
-        public ClassesController(AppDbContext context)
+        public ClassesController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: api/Classes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Class>>> GetClasses()
+        public async Task<ActionResult<IEnumerable<ClassDto>>> GetClasses()
         {
-            return await _context.Classes.ToListAsync();
+            var classes = await _context.Classes.ToListAsync();
+            return mapper.Map<List<Class>, List<ClassDto>>(classes);
         }
 
         // GET: api/Classes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Class>> GetClass(string id)
+        public async Task<ActionResult<ClassDto>> GetClass(string id)
         {
             var @class = await _context.Classes.FindAsync(id);
 
@@ -39,20 +42,21 @@ namespace uploaddownloadfiles.Controllers
                 return NotFound();
             }
 
-            return @class;
+            return mapper.Map<Class, ClassDto>(@class);
         }
 
         // PUT: api/Classes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClass(string id, Class @class)
+        public async Task<IActionResult> PutClass(string id, ClassDto @class)
         {
             if (id != @class.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(@class).State = EntityState.Modified;
+            var @classmapped = mapper.Map<ClassDto, Class>(@class);
+            _context.Entry(@classmapped).State = EntityState.Modified;
 
             try
             {
@@ -76,9 +80,11 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Classes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Class>> PostClass(Class @class)
+        public async Task<ActionResult<Class>> PostClass(ClassDto @class)
         {
-            _context.Classes.Add(@class);
+
+            var classedmapped = mapper.Map<ClassDto, Class>(@class);
+            _context.Classes.Add(classedmapped);
             try
             {
                 await _context.SaveChangesAsync();
@@ -95,7 +101,7 @@ namespace uploaddownloadfiles.Controllers
                 }
             }
 
-            return CreatedAtAction("GetClass", new { id = @class.Id }, @class);
+            return CreatedAtAction("GetClass", new { id = @class.Id }, classedmapped);
         }
 
         // DELETE: api/Classes/5
@@ -110,7 +116,6 @@ namespace uploaddownloadfiles.Controllers
 
             _context.Classes.Remove(@class);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

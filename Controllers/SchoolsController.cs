@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 
 namespace uploaddownloadfiles.Controllers
@@ -15,22 +17,25 @@ namespace uploaddownloadfiles.Controllers
     public class SchoolsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper mapper;
 
-        public SchoolsController(AppDbContext context)
+        public SchoolsController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: api/Schools
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<School>>> GetSchools()
+        public async Task<ActionResult<IEnumerable<SchoolDto>>> GetSchools()
         {
-            return await _context.Schools.ToListAsync();
+            var schools = await _context.Schools.ToListAsync();
+            return mapper.Map<List<School>, List<SchoolDto>>(schools);
         }
 
         // GET: api/Schools/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<School>> GetSchool(string id)
+        public async Task<ActionResult<SchoolDto>> GetSchool(string id)
         {
             var school = await _context.Schools.FindAsync(id);
 
@@ -39,19 +44,19 @@ namespace uploaddownloadfiles.Controllers
                 return NotFound();
             }
 
-            return school;
+            return mapper.Map<School, SchoolDto>(school);
         }
 
         // PUT: api/Schools/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSchool(string id, School school)
+        public async Task<IActionResult> PutSchool(string id, SchoolDto schooldto)
         {
-            if (id != school.Id)
+            if (id != schooldto.Id)
             {
                 return BadRequest();
             }
-
+            var school = mapper.Map<SchoolDto, School>(schooldto);
             _context.Entry(school).State = EntityState.Modified;
 
             try
@@ -76,8 +81,10 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Schools
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<School>> PostSchool(School school)
+        public async Task<ActionResult<School>> PostSchool(SchoolDto schooldto)
         {
+
+            var school = mapper.Map<SchoolDto, School>(schooldto);
             _context.Schools.Add(school);
             try
             {
@@ -120,3 +127,4 @@ namespace uploaddownloadfiles.Controllers
         }
     }
 }
+

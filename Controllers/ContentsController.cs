@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 
 namespace uploaddownloadfiles.Controllers
@@ -15,22 +17,25 @@ namespace uploaddownloadfiles.Controllers
     public class ContentsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper mapper;
 
-        public ContentsController(AppDbContext context)
+        public ContentsController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: api/Contents
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Content>>> GetContents()
+        public async Task<ActionResult<IEnumerable<ContentDto>>> GetContents()
         {
-            return await _context.Contents.ToListAsync();
+            var content = await _context.Contents.ToListAsync();
+            return mapper.Map<List<Content>, List<ContentDto>>(content);
         }
 
         // GET: api/Contents/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Content>> GetContent(string id)
+        public async Task<ActionResult<ContentDto>> GetContent(string id)
         {
             var content = await _context.Contents.FindAsync(id);
 
@@ -38,15 +43,15 @@ namespace uploaddownloadfiles.Controllers
             {
                 return NotFound();
             }
-
-            return content;
+            return mapper.Map<Content, ContentDto>(content);
         }
 
         // PUT: api/Contents/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContent(string id, Content content)
+        public async Task<IActionResult> PutContent(string id, ContentDto contentdto)
         {
+            var content = mapper.Map<ContentDto, Content>(contentdto);
             if (id != content.Id)
             {
                 return BadRequest();
@@ -76,9 +81,9 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Contents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Content>> PostContent(Content content)
+        public async Task<ActionResult<ContentDto>> PostContent(ContentDto contentdto)
         {
-            _context.Contents.Add(content);
+            var content = mapper.Map<ContentDto, Content>(contentdto);
             try
             {
                 await _context.SaveChangesAsync();

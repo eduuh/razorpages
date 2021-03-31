@@ -12,6 +12,6 @@ namespace UploadandDowloadService.Models
         public string Id { get; set; }
         public string Description { get; set; }
         public Role ContentTarget { get; set; }
-        public ICollection<Content> Contents { get; set; }
+        public virtual ICollection<Content> Contents { get; set; }
     }
 }

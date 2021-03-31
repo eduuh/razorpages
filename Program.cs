@@ -27,7 +27,7 @@ namespace UploadandDowloadService
                     context.Database.Migrate();
 
                     SeedData.Initialize(service, "Pa$$w0rd54").Wait();
-                    DummyDataSeedData.InitializeUsers(service).Wait();
+                    // DummyDataSeedData.InitializeUsers(service).Wait();
                 }
                 catch (Exception ex)
                 {

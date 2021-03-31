@@ -11,11 +11,11 @@ namespace UploadandDowloadService.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string Name { get; set; }
-        public Class Class { get; set; }
-        public AppUser Teacher { get; set; }
-        public ICollection<Content> Contents { get; set; }
-        public ICollection<AppUser> Students { get; set; }
-        public ICollection<StudentSubjectEnrolled> StudentEnrolled { get; set; }
+        public virtual Class Class { get; set; }
+        public virtual AppUser Teacher { get; set; }
+        public virtual ICollection<Content> Contents { get; set; }
+        public virtual ICollection<AppUser> Students { get; set; }
+        public virtual ICollection<StudentSubjectEnrolled> StudentEnrolled { get; set; }
 
     }
 }

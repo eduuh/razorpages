@@ -13,8 +13,8 @@ namespace UploadandDowloadService.Models
         public string Description { get; set; }
         public string type { get; set; }
         public string BlobUrl { get; set; }
-        public Subject Subject { get; set; }
-        public TrainingSubject TraingSubject { get; set; }
+        public virtual Subject Subject { get; set; }
+        public virtual TrainingSubject TraingSubject { get; set; }
         public ContentType ContentType { get; set; }
     }
 }
