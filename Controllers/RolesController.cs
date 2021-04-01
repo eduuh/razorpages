@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Data;
 using UploadandDowloadService.Models;
 
 namespace UploadandDowloadService.Controllers

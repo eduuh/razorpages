@@ -16,14 +16,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using System;
 using Microsoft.AspNetCore.Http;
-using UploadandDowloadService.Areas.Identity;
 using uploaddownloadfiles.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using NSwag;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using UploadandDowloadService.Data;
 
 namespace UploadandDowloadService
 {
@@ -42,6 +39,8 @@ namespace UploadandDowloadService
         {
 
 
+
+
             //configure mys sql connection
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -58,6 +57,9 @@ namespace UploadandDowloadService
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
             });
+
+            services.AddControllersWithViews(
+            );
 
 
             services.AddIdentityCore<AppUser>()
@@ -149,7 +151,6 @@ namespace UploadandDowloadService
 
             // services.AddHostedService<SeedDataHostedService>();
             //services.AddRazorPages();
-            services.AddControllersWithViews();
             //    services.AddAuthorization(options => options.AddPolicy("Admin", builder =>
             //     {
             //         builder.RequireAssertion(async context =>
@@ -191,8 +192,6 @@ namespace UploadandDowloadService
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseDefaultFiles();
             app.UseCors(app => app.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseRouting();
             app.UseAuthentication();
@@ -202,8 +201,6 @@ namespace UploadandDowloadService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
-                endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                    name: "default",
                    pattern: "{controller=Home}/{action=Index}/{id?}");

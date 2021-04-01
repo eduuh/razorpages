@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using UploadandDowloadService.Models;
 
 
-[assembly: HostingStartup(typeof(UploadandDowloadService.Areas.Identity.IdentityHostingStartup))]
-namespace UploadandDowloadService.Areas.Identity
+[assembly: HostingStartup(typeof(UploadandDowloadService.Data.IdentityHostingStartup))]
+namespace UploadandDowloadService.Data
 {
     public class IdentityHostingStartup : IHostingStartup
     {

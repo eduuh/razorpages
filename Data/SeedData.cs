@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UploadandDowloadService.Infratructure;
 using UploadandDowloadService.Models;
 
-namespace UploadandDowloadService.Areas.Identity.Data
+namespace UploadandDowloadService.Data
 {
     public static class SeedData
     {

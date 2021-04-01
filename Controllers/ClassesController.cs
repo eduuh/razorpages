@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Data;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
 

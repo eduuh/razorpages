@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Data;
 
 namespace uploaddownloadfiles.Migrations
 {
@@ -137,7 +136,6 @@ namespace uploaddownloadfiles.Migrations
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
 

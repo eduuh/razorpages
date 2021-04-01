@@ -9,8 +9,8 @@ using UploadandDowloadService.Data;
 namespace uploaddownloadfiles.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210331214119_CreatedNewColumns")]
-    partial class CreatedNewColumns
+    [Migration("20210401115338_UpdateEntities")]
+    partial class UpdateEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,6 +240,10 @@ namespace uploaddownloadfiles.Migrations
 
                     b.HasIndex("ClassId");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -251,6 +255,10 @@ namespace uploaddownloadfiles.Migrations
                     b.HasIndex("SchoolId");
 
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -285,19 +293,19 @@ namespace uploaddownloadfiles.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
+                    b.Property<string>("Pobox")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Zip")
+                    b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ContactId");

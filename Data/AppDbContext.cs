@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Controllers;
 using UploadandDowloadService.Models;
 
-namespace UploadandDowloadService.Areas.Identity
+namespace UploadandDowloadService.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {

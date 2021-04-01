@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Data;
 
 public class AppContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
     private readonly IConfiguration config;
-  
+
     public AppContextFactory() { }
     public AppDbContext CreateDbContext(string[] args)
     {

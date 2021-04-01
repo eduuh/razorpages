@@ -1,13 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UploadandDowloadService.Areas.Identity;
-using UploadandDowloadService.Areas.Identity.Data;
-using UploadandDowloadService.Models;
-using uploaddownloadfiles.Areas.Identity.Data;
+using UploadandDowloadService.Data;
 
 namespace UploadandDowloadService
 {
@@ -27,7 +23,7 @@ namespace UploadandDowloadService
                     context.Database.Migrate();
                     //    SeedData.CreateDefaultRoles(service).Wait();
                     //  SeedData.Initialize(service, "Pa$$w0rd54").Wait();
-                    DummyDataSeedData.InitializeUsers(service).Wait();
+                    // DummyDataSeedData.InitializeUsers(service).Wait();
                 }
                 catch (Exception ex)
                 {

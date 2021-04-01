@@ -4,9 +4,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using UploadandDowloadService.Areas.Identity;
+using UploadandDowloadService.Data;
 using UploadandDowloadService.Models;
-using uploaddownloadfiles.Areas.Identity.Data;
 
 namespace uploaddownloadfiles.Background
 {
@@ -28,7 +27,7 @@ namespace uploaddownloadfiles.Background
         }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await DummyDataSeedData.InitializeUsers(serviceProvider);
+            // await DummyDataSeedData.InitializeUsers(serviceProvider);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

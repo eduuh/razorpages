@@ -1,21 +1,15 @@
 ﻿using Bogus;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using UploadandDowloadService;
-using UploadandDowloadService.Areas.Identity;
-using UploadandDowloadService.Areas.Identity.Data;
 using UploadandDowloadService.Infratructure;
 using UploadandDowloadService.Models;
 using uploaddownloadfiles.Models;
 
-namespace uploaddownloadfiles.Areas.Identity.Data
+namespace UploadandDowloadService.Data
 {
-    public static class DummyDataSeedData
+    public static class DummyDaERR_EMPTY_RESPONSEtaSeedData
     {
         private static readonly Random _random = new Random();
         static string[] roles = new[] { "Student", "Teachers", "Parents" };
