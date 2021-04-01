@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UploadandDowloadService;
 using UploadandDowloadService.Areas.Identity;
 using UploadandDowloadService.Areas.Identity.Data;
+using UploadandDowloadService.Infratructure;
 using UploadandDowloadService.Models;
 using uploaddownloadfiles.Models;
 
@@ -27,7 +28,6 @@ namespace uploaddownloadfiles.Areas.Identity.Data
             .RuleFor(p => p.LastName, f => f.Name.LastName())
             .RuleFor(p => p.UserName, f => f.Name.LastName())
             .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
-            .RuleFor(p => p.Contact, f => FakeContact.Generate(1)[0])
             .RuleFor(p => p.isParent, f => true);
 
         public static Faker<AppUser> FakerTeacher { get; } = new Faker<AppUser>()
@@ -35,14 +35,12 @@ namespace uploaddownloadfiles.Areas.Identity.Data
           .RuleFor(p => p.LastName, f => f.Name.LastName())
             .RuleFor(p => p.UserName, f => f.Internet.UserName())
           .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
-             .RuleFor(p => p.Contact, f => FakeContact.Generate(1)[0])
           .RuleFor(p => p.isTeacher, f => true);
 
         public static Faker<AppUser> FakerStudent { get; } = new Faker<AppUser>()
              .RuleFor(p => p.FirstName, f => f.Name.FirstName())
              .RuleFor(p => p.LastName, f => f.Name.LastName())
              .RuleFor(p => p.UserName, f => f.Name.LastName())
-             .RuleFor(p => p.Contact, f => FakeContact.Generate(1)[0])
              .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
              .RuleFor(p => p.isStudent, f => true);
 
@@ -60,10 +58,10 @@ namespace uploaddownloadfiles.Areas.Identity.Data
 
         public static Faker<Contact> FakeContact { get; } = new Faker<Contact>()
             .RuleFor(x => x.Name, f => f.Address.StreetName())
-            .RuleFor(x => x.City, f => f.Address.City())
+            .RuleFor(x => x.Region, f => f.Address.City())
             .RuleFor(x => x.Email, f => f.Internet.Email())
             .RuleFor(x => x.Address, f => f.Address.FullAddress())
-            .RuleFor(x => x.Zip, f => f.Address.ZipCode())
+            .RuleFor(x => x.Pobox, f => f.Address.ZipCode())
             .RuleFor(x => x.State, f => f.Address.State());
 
 
@@ -101,8 +99,8 @@ namespace uploaddownloadfiles.Areas.Identity.Data
                 try
                 {
                     appuser.School = fakeschool;
-                    var teacherid = await SeedData.EnsureUser(provider, "Pa$$w0rd", appuser);
-                    await SeedData.EnsureRole(provider, teacherid, Role.Teacher);
+                    var teacherid = await UsersUtilities.EnsureUser(provider, "Pa$$w0rd", appuser);
+                    await UsersUtilities.EnsureRole(provider, teacherid, Role.Teacher.ToString());
                 }
                 catch (System.Exception)
                 {
@@ -116,8 +114,8 @@ namespace uploaddownloadfiles.Areas.Identity.Data
                 try
                 {
                     appuser.School = fakeschool;
-                    var parentid = await SeedData.EnsureUser(provider, "Pa$$w0rd", appuser);
-                    await SeedData.EnsureRole(provider, parentid, Role.Teacher);
+                    var parentid = await UsersUtilities.EnsureUser(provider, "Pa$$w0rd", appuser);
+                    await UsersUtilities.EnsureRole(provider, parentid, Role.Teacher.ToString());
                 }
                 catch (System.Exception)
                 {
@@ -130,8 +128,8 @@ namespace uploaddownloadfiles.Areas.Identity.Data
                 try
                 {
                     appuser.School = fakeschool;
-                    var studentid = await SeedData.EnsureUser(provider, "Pa$$w0rd", appuser);
-                    await SeedData.EnsureRole(provider, studentid, Role.Student);
+                    var studentid = await UsersUtilities.EnsureUser(provider, "Pa$$w0rd", appuser);
+                    await UsersUtilities.EnsureRole(provider, studentid, Role.Student.ToString());
                 }
                 catch (System.Exception)
                 {

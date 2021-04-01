@@ -22,6 +22,8 @@ namespace UploadandDowloadService.Areas.Identity
         {
             base.OnModelCreating(builder);
             //student, parent, teacher and school
+            builder.Entity<AppUser>().HasIndex(u => u.Email).IsUnique();
+            builder.Entity<AppUser>().HasIndex(u => u.UserName).IsUnique();
             builder.Entity<AppUser>().HasOne(s => s.School).WithMany(st => st.Stakeholders);
             // student and class
             builder.Entity<AppUser>().HasOne(s => s.Class).WithMany(c => c.students);

@@ -17,6 +17,8 @@ namespace UploadandDowloadService.MappingProfiles
             CreateMap<SchoolDto, School>();
             CreateMap<Content, ContentDto>();
             CreateMap<ContentDto, Content>();
+            CreateMap<ContentResult, Content>();
+            CreateMap<Content, ContentResult>();
             CreateMap<TrainingSubject, TrainingContentDto>();
             CreateMap<TrainingContentDto, TrainingSubject>();
         }

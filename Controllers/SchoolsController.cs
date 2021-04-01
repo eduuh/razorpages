@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
+using UploadandDowloadService.Services;
 
 namespace uploaddownloadfiles.Controllers
 {
@@ -18,11 +20,13 @@ namespace uploaddownloadfiles.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IMapper mapper;
+        private readonly IUser user;
 
-        public SchoolsController(AppDbContext context, IMapper mapper)
+        public SchoolsController(AppDbContext context, IMapper mapper, IUser user)
         {
             _context = context;
             this.mapper = mapper;
+            this.user = user;
         }
 
         // GET: api/Schools
@@ -48,11 +52,11 @@ namespace uploaddownloadfiles.Controllers
         }
 
         // PUT: api/Schools/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSchool(string id, SchoolDto schooldto)
         {
-            if (id != schooldto.Id)
+            if (id == null)
             {
                 return BadRequest();
             }
@@ -79,12 +83,30 @@ namespace uploaddownloadfiles.Controllers
         }
 
         // POST: api/Schools
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
+        [Authorize("Admin")]
         public async Task<ActionResult<School>> PostSchool(SchoolDto schooldto)
         {
 
-            var school = mapper.Map<SchoolDto, School>(schooldto);
+            var @me = await user.GetCurrentLoginDetails();
+            var school = new School()
+            {
+                Name = schooldto.Name,
+                Motto = schooldto.Motto,
+                Contact = new Contact
+                {
+                    Email = schooldto.Email,
+                    Address = schooldto.Address,
+                    Region = schooldto.Region,
+                    Pobox = schooldto.Pobox,
+                }
+                ,
+                Stakeholders = new List<AppUser>(){
+                  @me
+                }
+            };
+
             _context.Schools.Add(school);
             try
             {

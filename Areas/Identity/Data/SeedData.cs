@@ -3,75 +3,53 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using UploadandDowloadService.Infratructure;
 using UploadandDowloadService.Models;
 
 namespace UploadandDowloadService.Areas.Identity.Data
 {
     public static class SeedData
     {
+
+        public static async Task CreateDefaultRoles(IServiceProvider provider)
+        {
+            var rolemanager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            if (!await rolemanager.RoleExistsAsync(Role.Admin.ToString()))
+            {
+                await rolemanager.CreateAsync(new IdentityRole() { Name = Role.Admin.ToString() });
+                await rolemanager.CreateAsync(new IdentityRole() { Name = Role.Student.ToString() });
+                await rolemanager.CreateAsync(new IdentityRole() { Name = Role.Teacher.ToString() });
+                await rolemanager.CreateAsync(new IdentityRole() { Name = Role.Parent.ToString() });
+            }
+        }
         public static async Task Initialize(IServiceProvider provider, string testuserpw)
         {
             using (var context = new AppDbContext(provider.GetRequiredService<DbContextOptions<AppDbContext>>()))
             {
 
-                var adminID = await EnsureUser(provider, testuserpw,
+                var adminID = await UsersUtilities.EnsureUser(provider, testuserpw,
                  new AppUser
                  {
                      Email = "admin@contoso.com",
                      FirstName = "Admin",
                      LastName = "Kaizen",
-                     UserName = "admin"
+                     UserName = "admin",
+                     isAdmin = true
                  });
-                await EnsureRole(provider, adminID, Role.Admin);
+                await UsersUtilities.EnsureRole(provider, adminID, Role.Admin.ToString());
 
-                var managerId = await EnsureUser(provider, testuserpw, new AppUser
+                var managerId = await UsersUtilities.EnsureUser(provider, testuserpw, new AppUser
                 {
                     Email = "management@contoso.com",
                     FirstName = "Management",
                     LastName = "Kaizen",
-                    UserName = "kaizen"
+                    UserName = "kaizen",
+                    isAdmin = true
                 });
-                await EnsureRole(provider, managerId, Role.Manager);
+                await UsersUtilities.EnsureRole(provider, managerId, Role.Manager.ToString());
             }
         }
 
-        public static async Task<string> EnsureUser(IServiceProvider provider, string testUserPw, AppUser appuser)
-        {
-            var usermananger = provider.GetService<UserManager<AppUser>>();
-
-            var user = await usermananger.FindByNameAsync(appuser.UserName);
-            if (user == null)
-            {
-                user = appuser;
-                await usermananger.CreateAsync(appuser, testUserPw);
-            }
-            if (user == null)
-            {
-                throw new Exception("The password is probably not strong enough");
-            }
-            return user.Id;
-        }
-
-
-        public static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider, string uid, Role role)
-        {
-            IdentityResult ir = null;
-            var rolemanager = serviceProvider.GetService<RoleManager<IdentityRole>>();
-            if (rolemanager == null)
-            {
-                throw new Exception("rolemanger error");
-            }
-            if (!await rolemanager.RoleExistsAsync(role.ToString()))
-            {
-                ir = await rolemanager.CreateAsync(new IdentityRole(role.ToString()));
-            }
-
-            var usermananger = serviceProvider.GetService<UserManager<AppUser>>();
-            var user = await usermananger.FindByIdAsync(uid);
-
-            if (user == null) throw new Exception("The testUser password is not string enough");
-            ir = await usermananger.AddToRoleAsync(user, role.ToString());
-            return ir;
-        }
     }
 }

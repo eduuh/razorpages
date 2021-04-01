@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using UploadandDowloadService.Areas.Identity;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
+using ContentResult = UploadandDowloadService.Models.ContentResult;
 
 namespace uploaddownloadfiles.Controllers
 {
@@ -81,9 +82,10 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Contents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ContentDto>> PostContent(ContentDto contentdto)
+        public async Task<ActionResult<ContentResult>> PostContent(ContentResult contentresult)
         {
-            var content = mapper.Map<ContentDto, Content>(contentdto);
+            var content = mapper.Map<ContentResult, Content>(contentresult);
+            await _context.Contents.AddAsync(content);
             try
             {
                 await _context.SaveChangesAsync();
@@ -101,6 +103,27 @@ namespace uploaddownloadfiles.Controllers
             }
 
             return CreatedAtAction("GetContent", new { id = content.Id }, content);
+        }
+
+        [HttpPost("{contentid}/subject/{subjectid}")]
+        public async Task<ActionResult<ContentDto>> AddContentoClass(string contentid, string subjectid)
+        {
+            var content = await _context.Contents.FindAsync(contentid);
+            if (content == null) return NotFound();
+
+            var subject = await _context.Subjects.FindAsync(subjectid);
+            subject.Contents.Add(content);
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
+
+            return Ok();
         }
 
         // DELETE: api/Contents/5

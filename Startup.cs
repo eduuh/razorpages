@@ -21,11 +21,15 @@ using uploaddownloadfiles.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using NSwag;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace UploadandDowloadService
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -124,6 +128,24 @@ namespace UploadandDowloadService
 
             // services.AddHostedService<SeedDataHostedService>();
             services.AddRazorPages();
+            //    services.AddAuthorization(options => options.AddPolicy("Admin", builder =>
+            //     {
+            //         builder.RequireAssertion(async context =>
+            //         {
+            //             string[] roles = { };
+            //             if (context.Resource is AuthorizationFilterContext mvc)
+            //             {
+            //                 var username = mvc.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            //                 var usermanager = mvc.HttpContext.RequestServices.GetRequiredService<UserManager<AppUser>>();
+
+            //                 var user = await usermanager.FindByNameAsync(username);
+            //                 roles = (await usermanager.GetRolesAsync(user)).ToArray();
+            //                 return roles.Contains("Admin");
+            //             }
+            //             return roles.Contains("Admin");
+
+            //         });
+            //     }));
 
 
         }

@@ -38,18 +38,18 @@ namespace uploaddownloadfiles.Middleware
             switch (ex)
             {
                 case RestException re:
-                    errors =  re.Errors;
+                    errors = re.Errors;
                     logger.LogInformation("rest error");
                     context.Response.StatusCode = (int)re.Code;
                     break;
                 case Exception e:
-        
+
                     errors = string.IsNullOrWhiteSpace(e.Message) ? "Error" : e.Message;
                     logger.LogInformation("Server error");
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = "applicatMyPropertyion/json";
             if (errors != null)
             {
                 var result = JsonSerializer.Serialize(new

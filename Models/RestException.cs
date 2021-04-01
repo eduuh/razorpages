@@ -3,7 +3,7 @@ using System.Net;
 
 namespace uploaddownloadfiles.Models
 {
-    public class RestException: Exception
+    public class RestException : Exception
     {
         public RestException(HttpStatusCode code, object errors = null)
         {
@@ -12,6 +12,11 @@ namespace uploaddownloadfiles.Models
         }
         public HttpStatusCode Code { get; }
         public object Errors { get; }
+
+        public override string ToString()
+        {
+            return Message;
+        }
 
     }
 }
