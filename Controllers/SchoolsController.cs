@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UploadandDowloadService;
 using UploadandDowloadService.Areas.Identity;
 using UploadandDowloadService.Dto;
 using UploadandDowloadService.Models;
@@ -85,7 +86,7 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Schools
 
         [HttpPost]
-        [Authorize("Admin")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<ActionResult<School>> PostSchool(SchoolDto schooldto)
         {
 

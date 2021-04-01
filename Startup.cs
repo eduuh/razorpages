@@ -59,12 +59,33 @@ namespace UploadandDowloadService
                 opt.Filters.Add(new AuthorizeFilter(policy));
             });
 
-            // //congiguring identity
-            var builder = services.AddIdentityCore<AppUser>();
-            var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            identitybuilder.AddRoles<IdentityRole>();
-            identitybuilder.AddEntityFrameworkStores<AppDbContext>();
-            identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            services.AddIdentityCore<AppUser>()
+             .AddRoles<IdentityRole>()
+             .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<AppUser, IdentityRole>>()
+             .AddEntityFrameworkStores<AppDbContext>()
+             .AddDefaultTokenProviders()
+             .AddDefaultUI();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Lockout.MaxFailedAccessAttempts = 4;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
+
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/SignIn";
+                options.AccessDeniedPath = "Identity/SignIn";
+            });
+
             //  services.AddRazorPages();
 
             services.AddCors();
@@ -127,7 +148,8 @@ namespace UploadandDowloadService
             );
 
             // services.AddHostedService<SeedDataHostedService>();
-            services.AddRazorPages();
+            //services.AddRazorPages();
+            services.AddControllersWithViews();
             //    services.AddAuthorization(options => options.AddPolicy("Admin", builder =>
             //     {
             //         builder.RequireAssertion(async context =>
@@ -182,6 +204,9 @@ namespace UploadandDowloadService
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
         }

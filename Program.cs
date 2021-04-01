@@ -23,10 +23,10 @@ namespace UploadandDowloadService
                 try
                 {
                     var context = service.GetRequiredService<AppDbContext>();
-                    var usermanager = service.GetRequiredService<UserManager<AppUser>>();
+                    // var usermanager = service.GetRequiredService<UserManager<AppUser>>();
                     context.Database.Migrate();
-                    SeedData.CreateDefaultRoles(service).Wait();
-                    SeedData.Initialize(service, "Pa$$w0rd54").Wait();
+                    //    SeedData.CreateDefaultRoles(service).Wait();
+                    //  SeedData.Initialize(service, "Pa$$w0rd54").Wait();
                     DummyDataSeedData.InitializeUsers(service).Wait();
                 }
                 catch (Exception ex)
