@@ -1,7 +1,6 @@
 using AutoMapper;
-using UploadandDowloadService.Dto;
-using UploadandDowloadService.Dto.MappingProfiles;
-using UploadandDowloadService.Models;
+using Kaizen.Models;
+using Kaizen.Models.Dto;
 
 namespace UploadandDowloadService.MappingProfiles
 {

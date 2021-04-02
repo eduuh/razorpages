@@ -2,9 +2,8 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using UploadandDowloadService.Services;
 
-namespace UploadandDowloadService.Infratructure
+namespace UploadandDowloadService.Services
 {
     public class UserAccessor: IUserAccessor
     {

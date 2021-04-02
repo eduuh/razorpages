@@ -1,9 +1,10 @@
 using System;
+using Kaizen.DataAccess;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UploadandDowloadService.Data;
+
 
 namespace UploadandDowloadService
 {

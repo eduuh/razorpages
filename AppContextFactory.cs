@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Kaizen.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using UploadandDowloadService.Data;
 
 public class AppContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {

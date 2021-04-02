@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Kaizen.DataAccess;
+using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UploadandDowloadService.Data;
-using UploadandDowloadService.Models;
 
 namespace UploadandDowloadService.Controllers
 {

@@ -1,13 +1,14 @@
 using System.Threading.Tasks;
+using Kaizen.Utilities.Services;
 using Microsoft.AspNetCore.Mvc;
-using UploadandDowloadService.Interface;
+
 
 namespace UploadandDowloadService.Controllers
 {
-    public class FilesController : Controller
+    public class BlobUploadController : Controller
     {
         public readonly IBlobService _blobservice;
-        public FilesController(IBlobService blobservice)
+        public BlobUploadController(IBlobService blobservice)
         {
             _blobservice = blobservice;
         }

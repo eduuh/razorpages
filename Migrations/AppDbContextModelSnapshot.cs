@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using UploadandDowloadService.Data;
+using Kaizen.DataAccess;
 
 namespace uploaddownloadfiles.Migrations
 {

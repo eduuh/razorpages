@@ -1,14 +1,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Kaizen.Models;
+using Kaizen.DataAccess;
+using Kaizen.Utilities.Services;
 using UploadandDowloadService.Controllers;
-using UploadandDowloadService.Data;
-using UploadandDowloadService.Dto;
-using UploadandDowloadService.Models;
-using UploadandDowloadService.Services;
-using uploaddownloadfiles.Models;
 
-namespace UploadandDowloadService.Infratructure
+namespace UploadandDowloadService.Services
 {
     public class User : IUser
     {

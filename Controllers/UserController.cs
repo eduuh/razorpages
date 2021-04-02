@@ -2,14 +2,13 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Kaizen.DataAccess;
+using Kaizen.Models;
+using Kaizen.Models.Enums;
+using Kaizen.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UploadandDowloadService.Data;
-using UploadandDowloadService.Dto;
-using UploadandDowloadService.Infratructure;
-using UploadandDowloadService.Models;
 using UploadandDowloadService.Services;
-using uploaddownloadfiles.Models;
 
 namespace UploadandDowloadService.Controllers
 {

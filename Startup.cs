@@ -5,22 +5,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UploadandDowloadService.Interface;
-using UploadandDowloadService.Models;
-using UploadandDowloadService.Infratructure;
+using Kaizen.Models;
 using Microsoft.EntityFrameworkCore;
-using UploadandDowloadService.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using System;
-using Microsoft.AspNetCore.Http;
 using uploaddownloadfiles.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using NSwag;
-using UploadandDowloadService.Data;
+using Kaizen.DataAccess;
+using Kaizen.Utilities.Services;
+using Kaizen.Utilities;
+using UploadandDowloadService.Services;
 
 namespace UploadandDowloadService
 {
@@ -100,7 +99,7 @@ namespace UploadandDowloadService
             services.AddScoped<IJwtToken, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             // diffeernt instance
-            services.AddTransient<IUser, UploadandDowloadService.Infratructure.User>();
+            services.AddTransient<IUser, User>();
 
 
 

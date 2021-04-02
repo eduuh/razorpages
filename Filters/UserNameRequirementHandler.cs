@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using UploadandDowloadService.Models;
 using UploadandDowloadService.Services;
 
 namespace UploadandDowloadService.Filters

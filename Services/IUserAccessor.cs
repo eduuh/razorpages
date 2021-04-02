@@ -1,6 +1,7 @@
+﻿
 namespace UploadandDowloadService.Services
 {
-    public interface IUserAccessor
+   public  interface IUserAccessor
     {
         string GetCurrentUsername();
     }
