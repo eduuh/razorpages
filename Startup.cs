@@ -59,7 +59,7 @@ namespace UploadandDowloadService
 
             services.AddControllersWithViews(
             );
-            services.AddRazorPages();
+            
 
 
             services.AddIdentity<AppUser, IdentityRole>()
@@ -67,6 +67,8 @@ namespace UploadandDowloadService
              .AddEntityFrameworkStores<AppDbContext>()
              .AddDefaultTokenProviders()
              .AddDefaultUI();
+
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
             services.Configure<IdentityOptions>(options =>
             {
