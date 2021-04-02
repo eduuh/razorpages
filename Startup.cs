@@ -60,10 +60,10 @@ namespace UploadandDowloadService
 
             services.AddControllersWithViews(
             );
+            services.AddRazorPages();
 
 
-            services.AddIdentityCore<AppUser>()
-             .AddRoles<IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole>()
              .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<AppUser, IdentityRole>>()
              .AddEntityFrameworkStores<AppDbContext>()
              .AddDefaultTokenProviders()
@@ -85,10 +85,10 @@ namespace UploadandDowloadService
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/SignIn";
-                options.AccessDeniedPath = "Identity/SignIn";
+                options.AccessDeniedPath = "/Identity/SignIn";
             });
 
-            //  services.AddRazorPages();
+            //  
 
             services.AddCors();
             services.AddAutoMapper(typeof(Startup));
@@ -121,18 +121,18 @@ namespace UploadandDowloadService
                     ValidateIssuer = false,
 
                 };
-            }).AddCookie(IdentityConstants.ApplicationScheme,
-            o =>
-            {
-                o.Cookie.Expiration = TimeSpan.FromHours(8);
-                o.Cookie.SameSite = SameSiteMode.Strict;
-                o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                o.AccessDeniedPath = new PathString("/");
-                o.ExpireTimeSpan = TimeSpan.FromHours(8);
-                o.LoginPath = new PathString("/sign-in");
-                o.LogoutPath = new PathString("/sign-out");
-                o.SlidingExpiration = true;
-            });
+            });//.AddCookie(IdentityConstants.ApplicationScheme,
+            //o =>
+            //{
+            //    o.Cookie.Expiration = TimeSpan.FromHours(8);
+            //    o.Cookie.SameSite = SameSiteMode.Strict;
+            //    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            //    o.AccessDeniedPath = new PathString("/");
+            //    o.ExpireTimeSpan = TimeSpan.FromHours(8);
+            //    //o.LoginPath = new PathString("/sign-in");
+            //    //o.LogoutPath = new PathString("/sign-out");
+            //    o.SlidingExpiration = true;
+            //});
 
             services.AddSwaggerDocument(options =>
             {
@@ -201,6 +201,7 @@ namespace UploadandDowloadService
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                    name: "default",
                    pattern: "{controller=Home}/{action=Index}/{id?}");

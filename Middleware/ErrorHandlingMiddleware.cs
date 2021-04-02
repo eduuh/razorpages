@@ -56,6 +56,9 @@ namespace uploaddownloadfiles.Middleware
                 {
                     errors
                 });
+
+
+                Console.WriteLine(result);
                 await context.Response.WriteAsync(result);
             }
 

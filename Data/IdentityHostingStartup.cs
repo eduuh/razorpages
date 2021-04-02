@@ -30,11 +30,11 @@ namespace UploadandDowloadService.Data
 
 
 
-                var builder = services.AddIdentityCore<AppUser>();
-                var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
-                identitybuilder.AddRoles<IdentityRole>();
-                identitybuilder.AddEntityFrameworkStores<AppDbContext>();
-                identitybuilder.AddSignInManager<SignInManager<AppUser>>();
+                //var builder = services.AddIdentityCore<AppUser>();
+                //var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
+                //identitybuilder.AddRoles<IdentityRole>();
+                //identitybuilder.AddEntityFrameworkStores<AppDbContext>();
+                //identitybuilder.AddSignInManager<SignInManager<AppUser>>();
 
             });
         }
