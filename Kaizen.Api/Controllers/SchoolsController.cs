@@ -83,7 +83,7 @@ namespace uploaddownloadfiles.Controllers
         // POST: api/Schools
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        // [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<ActionResult<School>> PostSchool(SchoolDto schooldto)
         {
 
