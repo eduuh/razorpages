@@ -1,4 +1,3 @@
-
 var dataTable;
 
 $(document).ready(function () {
@@ -8,25 +7,36 @@ $(document).ready(function () {
 function LoadList() {
     dataTable = $('#Dt_Load').DataTable({
         "ajax": {
-            "url": "/api/school",
+            "url": "/api/user",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "40%" },
-            { "data": "motto", "width": "30%" },
+            { "data": "fullName", "width": "25%" },
+            { "data": "userName", "width": "15%" },
+            { "data": "email", "width": "20%" },
+            { "data": "phoneNumber", "width": "20%" },
             {
-                "data": "id",
+                "data": { id: "id", lockoutEnd: "lockoutEnd" },
                 "render": function (data) {
-                    return `
+                    var today = new Date().getTime();
+                    var lockout = new Date(data.lockoutEnd).getTime();
+                    if (lockout > today) {
+
+                        return `
                          <div class="text-center"> 
-                           <a href="/Admin/school/upsert?id=${data}" class="btn btn-success text-white" style="cussor:pointer, width:100px;">
-                             <i class="fas fa-edit"></i> Edit</a>
-                         
-                           <a class="btn btn-danger text-white" style="cursor:pointer, width:100px;" onClick=Delete('/api/school/'+'${data}')>
-                             <i class="fas fa-trash-alt"></i> Delete</a>
+                           <a class="btn btn-success text-white" style="cussor:pointer, width:100px;" onclick="LockUnlock">
+                             <i class="fas fa-lock-open"</i> Unlock
+                    </a></div>`;
+                    } else {
+                        return `
+                         <div class="text-center"> 
+                           <a class="btn btn-success text-white" style="cussor:pointer, width:100px;" onclick="LockUnlock">
+                             <i class="fas fa-lock"</i> LockUser
                          </div>`;
-                },
+                    }
+                }
+                ,
                 "width": "30%"
             }
         ],

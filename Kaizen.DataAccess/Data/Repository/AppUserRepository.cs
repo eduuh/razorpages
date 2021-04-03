@@ -1,14 +1,13 @@
 using System.Threading.Tasks;
+using Kaizen.DataAccess.Data.Repository.IRepository;
+using Kaizen.Models;
+using Kaizen.Utilities.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Kaizen.Models;
-using Kaizen.DataAccess;
-using Kaizen.Utilities.Services;
-using UploadandDowloadService.Controllers;
 
-namespace UploadandDowloadService.Services
+namespace Kaizen.DataAccess.Data.Repository
 {
-    public class User : IUser
+    public class AppUserRepository : Repository<AppUser>, IAppUserRepository
     {
         private readonly AppDbContext context;
         private readonly UserManager<AppUser> usermanager;
@@ -16,17 +15,22 @@ namespace UploadandDowloadService.Services
         private readonly IJwtToken jwtgenerator;
         private readonly IUserAccessor userAccessor;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IJwtToken _jwtgenerator;
 
-        public User(AppDbContext context, UserManager<AppUser> usermanager,
-        SignInManager<AppUser> signinmanager, IJwtToken jwtgenerator, IUserAccessor userAccessor,
-        RoleManager<IdentityRole> roleManager)
+        public AppUserRepository(
+            AppDbContext context,
+            UserManager<AppUser> usermanager,
+            SignInManager<AppUser> signinmanager,
+            IJwtToken jwtgenerator,
+            IUserAccessor userAccessor,
+            RoleManager<IdentityRole> roleManager) : base(context)
         {
+            this._jwtgenerator = jwtgenerator;
+            this.userAccessor = userAccessor;
+            this.roleManager = roleManager;
             this.context = context;
             this.usermanager = usermanager;
             this.signinmanager = signinmanager;
-            this.jwtgenerator = jwtgenerator;
-            this.userAccessor = userAccessor;
-            this.roleManager = roleManager;
         }
 
         public async Task<AppUser> GetCurrentLoginDetails()
@@ -82,8 +86,7 @@ namespace UploadandDowloadService.Services
             {
                 return new UserSuccessResponse(user.Email, jwtgenerator.createToken(user), user.UserName);
             }
-
-            return new UserSuccessResponse(null, null, null);
+            throw new RestException(System.Net.HttpStatusCode.InternalServerError, new { message = "User registration not successfull Please Try again" });
         }
 
 

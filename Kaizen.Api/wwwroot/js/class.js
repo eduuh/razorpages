@@ -17,11 +17,11 @@ function LoadList() {
                 "render": function (data) {
                     return `
                          <div class="text-center"> 
-                           <a href="/Admin/class/upsert?id=${data}" class="btn btn-success text-white" style="cussor:pointer, width:100px;"
-                             <i class="far fa-edit"</i> Edit
+                           <a href="/Admin/class/upsert?id=${data}" class="btn btn-success text-white" style="cussor:pointer, width:100px;">
+                             <i class="fas fa-edit"></i> Edit</a>
 
                            <a class="btn btn-danger text-white" style="cursor:pointer, width:100px;" onClick=Delete('/api/class/'+'${data}')
-                             <i class="far fa-trash-alt"</i> Delete
+                             <i class="fas fa-trash-alt"></i> Delete
                            </a>
                          </div>
                   `;

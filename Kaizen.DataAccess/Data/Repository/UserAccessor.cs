@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
+using Kaizen.DataAccess.Data.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 
-namespace UploadandDowloadService.Services
+namespace Kaizen.DataAccess.Data.Repository
 {
-    public class UserAccessor: IUserAccessor
+    public class UserAccessor : IUserAccessor
     {
         private readonly IHttpContextAccessor httpcontextAccessor;
 

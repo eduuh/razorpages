@@ -17,7 +17,6 @@ using NSwag;
 using Kaizen.DataAccess;
 using Kaizen.Utilities.Services;
 using Kaizen.Utilities;
-using UploadandDowloadService.Services;
 using Kaizen.DataAccess.Data.Repository;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -92,8 +91,6 @@ namespace UploadandDowloadService
             services.AddSingleton<IBlobService, BlobService>();
             services.AddScoped<IJwtToken, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
-            // diffeernt instance
-            services.AddTransient<IUser, User>();
 
 
 

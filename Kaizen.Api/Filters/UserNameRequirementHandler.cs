@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using UploadandDowloadService.Services;
 
 namespace UploadandDowloadService.Filters
 {
