@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Kaizen.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 
@@ -21,6 +22,9 @@ namespace Kaizen.Models
         public virtual ICollection<StudentParent> Parents { get; set; }
         public virtual ICollection<StudentParent> Childrens { get; set; }
         public virtual Class Class { get; set; }
+
+        [NotMapped]
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
 
 
 
@@ -55,7 +59,7 @@ namespace Kaizen.Models
             }
         }
 
-
+        [NotMapped]
         public Role Type
         {
             get

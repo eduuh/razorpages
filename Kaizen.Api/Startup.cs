@@ -13,8 +13,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using System;
 using uploaddownloadfiles.Middleware;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using NSwag;
 using Kaizen.DataAccess;
 using Kaizen.Utilities.Services;
@@ -22,6 +20,8 @@ using Kaizen.Utilities;
 using UploadandDowloadService.Services;
 using Kaizen.DataAccess.Data.Repository;
 using Kaizen.DataAccess.Data.Repository.IRepository;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Taste.Utilities;
 
 namespace UploadandDowloadService
 {
@@ -55,7 +55,6 @@ namespace UploadandDowloadService
 
 
             services.AddIdentity<AppUser, IdentityRole>()
-             .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<AppUser, IdentityRole>>()
              .AddEntityFrameworkStores<AppDbContext>()
              .AddDefaultTokenProviders()
              .AddDefaultUI();
@@ -72,6 +71,8 @@ namespace UploadandDowloadService
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             });
+
+            services.AddSingleton<IEmailSender, EmailSender>();
 
 
             // services.ConfigureApplicationCookie(options =>
