@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +13,11 @@ namespace UploadandDowloadService.Controllers
     public class UserController : Controller
     {
         private readonly IUnitofWork unitofWork;
+        private readonly IMapper _mapper;
 
-        public UserController(IUnitofWork unitofWork)
+        public UserController(IUnitofWork unitofWork, IMapper mapper)
         {
+            this._mapper = mapper;
             this.unitofWork = unitofWork;
         }
         [HttpGet]
@@ -115,12 +118,14 @@ namespace UploadandDowloadService.Controllers
 
         // }
 
-        [Authorize]
-        [HttpGet("user/me")]
-        public async Task<ActionResult<AppUser>> CurrentUser()
-        {
-            return Json(new { data = await unitofWork.AppUser.GetCurrentLoginDetails() });
-        }
+        // [Authorize]
+        // [HttpGet("user/me")]
+        // public async Task<ActionResult<AppUserDto>> CurrentUser()
+        // {
+        //     var data = await unitofWork.AppUser.GetCurrentLoginDetails();
+        //     var mapped = _mapper.Map<AppUser, AppuserDto>(data);
+        //     return Json(new { data = await unitofWork.AppUser.GetCurrentLoginDetails() });
+        // }
 
 
 
