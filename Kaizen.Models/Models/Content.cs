@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Mime;
 
 namespace Kaizen.Models
 {
@@ -15,6 +14,6 @@ namespace Kaizen.Models
         public string BlobUrl { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual TrainingSubject TraingSubject { get; set; }
-        public ContentType ContentType { get; set; }
+        public string ContentType { get; set; }
     }
 }

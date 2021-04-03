@@ -20,6 +20,8 @@ using Kaizen.DataAccess;
 using Kaizen.Utilities.Services;
 using Kaizen.Utilities;
 using UploadandDowloadService.Services;
+using Kaizen.DataAccess.Data.Repository;
+using Kaizen.DataAccess.Data.Repository.IRepository;
 
 namespace UploadandDowloadService
 {
@@ -50,15 +52,6 @@ namespace UploadandDowloadService
             });
 
 
-            services.AddControllers(opt =>
-            {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
-            });
-
-            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
-
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 
             services.AddIdentity<AppUser, IdentityRole>()
@@ -81,11 +74,11 @@ namespace UploadandDowloadService
             });
 
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Identity/SignIn";
-                options.AccessDeniedPath = "/Identity/SignIn";
-            });
+            // services.ConfigureApplicationCookie(options =>
+            // {
+            //     options.LoginPath = "/Identity/SignIn";
+            //     options.AccessDeniedPath = "/Identity/SignIn";
+            // });
 
             //  
 
@@ -147,6 +140,17 @@ namespace UploadandDowloadService
                 });
             }
             );
+
+            services.AddScoped<IUnitofWork, UnitofWork>();
+            services.AddControllers(opt =>
+            {
+                // var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                // opt.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

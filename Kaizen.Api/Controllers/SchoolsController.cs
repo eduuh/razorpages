@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kaizen.DataAccess;
+using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Kaizen.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -14,17 +15,20 @@ namespace uploaddownloadfiles.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SchoolsController : ControllerBase
+    public class SchoolsController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IMapper mapper;
         private readonly IUser user;
 
-        public SchoolsController(AppDbContext context, IMapper mapper, IUser user)
+        private readonly IUnitofWork _unitofWork;
+
+        public SchoolsController(AppDbContext context, IMapper mapper, IUser user, IUnitofWork unitofwork)
         {
             _context = context;
             this.mapper = mapper;
             this.user = user;
+            _unitofWork = unitofwork;
         }
 
         // GET: api/Schools
