@@ -89,6 +89,14 @@ namespace Kaizen.DataAccess.Data.Repository
             throw new RestException(System.Net.HttpStatusCode.InternalServerError, new { message = "User registration not successfull Please Try again" });
         }
 
+        public void Update(AppUser user)
+        {
+            var objectoupdate = Get(user.Id);
+            if (objectoupdate.SchoolId == null && user.SchoolId != null)
+            {
+                objectoupdate.SchoolId = user.SchoolId;
+            }
+        }
 
         private async Task<IdentityResult> EnsureRole(AppUser user, string role)
         {

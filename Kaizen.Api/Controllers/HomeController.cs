@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Taste.Utilities;
 
 namespace UploadandDowloadService.Controllers
 {
@@ -11,15 +13,17 @@ namespace UploadandDowloadService.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager)
         {
+            this._userManager = userManager;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToPage("/School/Home/Index");
         }
 
         public IActionResult Privacy()

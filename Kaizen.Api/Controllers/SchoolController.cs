@@ -5,7 +5,9 @@ using AutoMapper;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Kaizen.Models.Dto;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Kaizen.Api.Controllers
 {
@@ -16,13 +18,14 @@ namespace Kaizen.Api.Controllers
     {
         private readonly IUnitofWork unitofWork;
         private readonly IMapper _mapper;
+        public readonly IWebHostEnvironment _hostingenvironment;
 
-        public SchoolController(IUnitofWork unitofWork, IMapper mapper)
+        public SchoolController(IUnitofWork unitofWork, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             this._mapper = mapper;
             this.unitofWork = unitofWork;
+            _hostingenvironment = hostingEnvironment;
         }
-
 
 
         [HttpDelete("{id}")]
@@ -38,12 +41,17 @@ namespace Kaizen.Api.Controllers
             unitofWork.Save();
             return Json(new { success = true, message = "Deleted Succesfully" });
         }
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SchoolDto>>> GetSchools()
+        public IActionResult Get()
         {
-            var schools = unitofWork.School.GetAll(null, null, "Contact").ToList();
-            return _mapper.Map<List<School>, List<SchoolDto>>(schools);
+            return Json(new { data = unitofWork.School.GetAll() });
+        }
+
+        [HttpGet("names")]
+        public ActionResult<IEnumerable<SelectListItem>> GetSchools()
+        {
+            var schools = unitofWork.School.GetSchooListForDropdown();
+            return Json(new { data = schools });
         }
 
         // GET: api/Schools/5

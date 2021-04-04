@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Kaizen.Models;
+using Kaizen.Models.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -100,28 +101,30 @@ namespace uploaddownloadfiles.Areas.Identity.Pages.Account
 
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                if (!await _roleManager.RoleExistsAsync(SD.ManagerRole))
+                if (!await _roleManager.RoleExistsAsync(Role.Admin.ToString()))
                 {
-                    _roleManager.CreateAsync(new IdentityRole(SD.ManagerRole)).GetAwaiter().GetResult();
-                    _roleManager.CreateAsync(new IdentityRole(SD.SchoolAdmin)).GetAwaiter().GetResult();
-                    _roleManager.CreateAsync(new IdentityRole(SD.Student)).GetAwaiter().GetResult();
-                    _roleManager.CreateAsync(new IdentityRole(SD.Teacher)).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString())).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(Role.Manager.ToString())).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(Role.Parent.ToString())).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(Role.Student.ToString())).GetAwaiter().GetResult();
                 }
 
                 if (result.Succeeded)
                 {
-                    if (role == SD.ManagerRole)
+                    if (role == Role.Manager.ToString())
                     {
-                        await _userManager.AddToRoleAsync(user, SD.ManagerRole);
+                        await _userManager.AddToRoleAsync(user, Role.Manager.ToString());
+                        user.SetRole(Role.Manager.ToString());
                     }
-                    else if (role == SD.SchoolAdmin)
+                    else if (role == Role.Admin.ToString())
                     {
-                        await _userManager.AddToRoleAsync(user, SD.SchoolAdmin);
+                        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
+                        user.SetRole(Role.Admin.ToString());
                     }
                     else
                     {
-
-                        await _userManager.AddToRoleAsync(user, SD.SchoolAdmin);
+                        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
+                        user.SetRole(Role.Admin.ToString());
                     }
 
                     _logger.LogInformation("User created a new account with password.");

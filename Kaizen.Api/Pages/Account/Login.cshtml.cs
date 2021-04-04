@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Kaizen.Models;
+using Kaizen.Models.Enums;
 
 namespace uploaddownloadfiles.Areas.Identity.Pages.Account
 {
@@ -19,7 +20,7 @@ namespace uploaddownloadfiles.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AppUser> signInManager, 
+        public LoginModel(SignInManager<AppUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<AppUser> userManager)
         {
@@ -74,7 +75,7 @@ namespace uploaddownloadfiles.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -82,8 +83,16 @@ namespace uploaddownloadfiles.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    if (User.IsInRole(Role.Admin.ToString()))
+                    {
+                        return RedirectToPage("/School/Home/Index");
+                    }
+                    else if (User.IsInRole(Role.Manager.ToString()))
+                    {
+                        return RedirectToPage("/Admin/Home/Index");
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {

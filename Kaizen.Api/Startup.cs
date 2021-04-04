@@ -74,25 +74,21 @@ namespace UploadandDowloadService
             services.AddSingleton<IEmailSender, EmailSender>();
 
 
-            // services.ConfigureApplicationCookie(options =>
-            // {
-            //     options.LoginPath = "/Identity/SignIn";
-            //     options.AccessDeniedPath = "/Identity/SignIn";
-            // });
-
-            //  
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             services.AddCors();
             services.AddAutoMapper(typeof(Startup));
-
 
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
             services.AddSingleton<IBlobService, BlobService>();
             services.AddScoped<IJwtToken, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
-
-
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokenkey"]));
             var TokenValidationParameter = new TokenValidationParameters();
