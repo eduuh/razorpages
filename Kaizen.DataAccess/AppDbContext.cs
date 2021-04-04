@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Kaizen.Models;
+using Kaizen.Models.Models;
 
 namespace Kaizen.DataAccess
 {
@@ -16,7 +17,7 @@ namespace Kaizen.DataAccess
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Content> Contents { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<TrainingSubject> TrainingContents { get; set; }
+        public DbSet<CultureReport> CultureReports { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -32,7 +33,6 @@ namespace Kaizen.DataAccess
             builder.Entity<AppUser>().HasMany(s => s.Subjects).WithOne(s => s.Teacher);
             // class and  classrep
 
-            builder.Entity<TrainingSubject>().HasMany(s => s.Contents).WithOne(s => s.TraingSubject);
 
             builder.Entity<School>().HasMany(s => s.Classes).WithOne(s => s.School);
 

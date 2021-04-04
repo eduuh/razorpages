@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UploadandDowloadService.Dto.AppUser;
 
 namespace UploadandDowloadService.Controllers
 {
@@ -22,7 +25,8 @@ namespace UploadandDowloadService.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(new { data = unitofWork.AppUser.GetAll() });
+            var data = unitofWork.AppUser.GetAll().ToList();
+            return Json(data: new { data = _mapper.Map<List<AppUser>, List<AppUserDto>>(data) });
         }
 
         [HttpPost]

@@ -28,6 +28,16 @@
 
                 <div class="form-group row">
                     <div class="col-3">
+                        <label asp-for="SchoolObj.Type"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="SchoolObj.Type" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.Type"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
                         <label asp-for="SchoolObj.Motto"></label>
                     </div>
                     <div class="col-9">
@@ -41,7 +51,8 @@
                         <label asp-for="SchoolObj.Address"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Address" />
+                        <input class="form-control" asp-for="SchoolObj.Address"
+                            placeholder="example: Nyeri County, Kimathin, B5" />
                         <span class="text-danger" asp-validation-for="SchoolObj.Address"></span>
                     </div>
                 </div>
@@ -51,7 +62,7 @@
                         <label asp-for="SchoolObj.Region"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Region" />
+                        <input class="form-control" asp-for="SchoolObj.Region" placeholder="example: Nyeri" />
                         <span class="text-danger" asp-validation-for="SchoolObj.Region"></span>
                     </div>
                 </div>
@@ -71,18 +82,28 @@
                         <label asp-for="SchoolObj.Pobox"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School PoBox Number" />
+                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School Post Number" />
                         <span class="text-danger" asp-validation-for="SchoolObj.Pobox"></span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-3">
-                        <label asp-for="SchoolObj.Pobox"></label>
+                        <label asp-for="SchoolObj.PhoneNumber"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School PoBox Number" />
-                        <span class="text-danger" asp-validation-for="SchoolObj.Pobox"></span>
+                        <input class="form-control" asp-for="SchoolObj.PhoneNumber" placeholder="School PoBox Number" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.PhoneNumber"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SchoolObj.Website"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" type="url" asp-for="SchoolObj.Website" placeholder="Website Url" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.Website"></span>
                     </div>
                 </div>
 
@@ -106,12 +127,16 @@
                     </div>
                 </div>
 
-            </div>
 
+            </div>
             <div class="col-4 pt-3">
                 <i>Input and Image here</i>
             </div>
         </div>
+
+
+
+    </div>
     </div>
 
 </form>

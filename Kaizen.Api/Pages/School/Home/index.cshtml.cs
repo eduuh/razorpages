@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Microsoft.AspNetCore.Identity;
@@ -12,18 +13,24 @@ namespace Kaizen.Api.Pages.School.Home
 
         private readonly UserManager<AppUser> _userManager;
 
+
         public IndexModel(IUnitofWork unitofwork, UserManager<AppUser> userManager)
         {
             this._userManager = userManager;
             this.unitofwork = unitofwork;
+
         }
 
         public Kaizen.Models.School School { get; set; }
+        public IEnumerable<Kaizen.Models.Class> Classes { get; set; }
+        public IEnumerable<Kaizen.Models.AppUser> SchoolUser { get; set; }
 
         public void OnGet()
         {
             var user = _userManager.GetUserAsync(HttpContext.User).GetAwaiter().GetResult();
-            School = unitofwork.School.GetFirstOrDefault(s => s.Id == user.SchoolId, "Contact");
+            School = unitofwork.School.GetFirstOrDefault(s => s.Id == user.SchoolId);
+            Classes = unitofwork.Class.GetAll(s => s.SchoolId == user.SchoolId);
+            SchoolUser = unitofwork.AppUser.GetAll(s => s.SchoolId == user.SchoolId);
         }
     }
 }

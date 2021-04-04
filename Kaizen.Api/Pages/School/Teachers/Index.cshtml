@@ -1,0 +1,22 @@
+﻿@page
+@model Kaizen.Api.Pages.School.Profiles.IndexModel
+
+
+@foreach (var user in Model.SchoolUsers)
+{
+  <div class="card">
+  <img src="img.jpg" alt="John" style="width:100%">
+  <h1>user.FullName</h1>
+  <p class="title">user.Type</p>
+  <p>@user.School.Name</p>
+  <p><button>View Profile</button></p>
+   </div>
+}
+
+
+
+
+
+@section Scripts{
+<script src="~/js/Profile.js"></script>
+}

@@ -7,7 +7,7 @@ $(document).ready(function () {
 function LoadList() {
     dataTable = $('#Dt_Load').DataTable({
         "ajax": {
-            "url": "/api/user",
+            "url": "/user",
             "type": "GET",
             "datatype": "json"
         },
@@ -51,7 +51,7 @@ function LoadList() {
 function LockUnlock(id) {
     $.ajax({
         type: 'POST',
-        url: '/api/user',
+        url: '/user',
         data: JSON.stringify(id),
         contentType: "application/json",
         success: function (data) {
