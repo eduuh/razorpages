@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,14 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UploadandDowloadService.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    [Route("user/")]
     public class UserController : Controller
     {
         private readonly IUnitofWork unitofWork;
+        private readonly IMapper _mapper;
 
-        public UserController(IUnitofWork unitofWork)
+        public UserController(IUnitofWork unitofWork, IMapper mapper)
         {
+            this._mapper = mapper;
             this.unitofWork = unitofWork;
         }
         [HttpGet]
@@ -46,7 +48,7 @@ namespace UploadandDowloadService.Controllers
             return Json(new { success = true, message = "Operation Succesfully" });
         }
 
-        [HttpPost("user/login")]
+        [HttpPost("login")]
         public async Task<ActionResult<UserSuccessResponse>> Login([FromBody] UserLogin userLogin)
         {
             UserSuccessResponse result = await unitofWork.AppUser.Login(userLogin);
@@ -54,7 +56,7 @@ namespace UploadandDowloadService.Controllers
         }
 
 
-        [HttpPost("user/register")]
+        [HttpPost("register")]
         public async Task<ActionResult<UserSuccessResponse>> Register([FromBody] UserRegister userRegister)
         {
             var data = await unitofWork.AppUser.Register(userRegister);
@@ -115,12 +117,14 @@ namespace UploadandDowloadService.Controllers
 
         // }
 
-        [Authorize]
-        [HttpGet("user/me")]
-        public async Task<ActionResult<AppUser>> CurrentUser()
-        {
-            return Json(new { data = await unitofWork.AppUser.GetCurrentLoginDetails() });
-        }
+        // [Authorize]
+        // [HttpGet("user/me")]
+        // public async Task<ActionResult<AppUserDto>> CurrentUser()
+        // {
+        //     var data = await unitofWork.AppUser.GetCurrentLoginDetails();
+        //     var mapped = _mapper.Map<AppUser, AppuserDto>(data);
+        //     return Json(new { data = await unitofWork.AppUser.GetCurrentLoginDetails() });
+        // }
 
 
 

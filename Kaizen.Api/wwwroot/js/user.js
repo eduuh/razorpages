@@ -25,51 +25,42 @@ function LoadList() {
 
                         return `
                          <div class="text-center"> 
-                           <a class="btn btn-success text-white" style="cussor:pointer, width:100px;" onclick="LockUnlock">
+                           <a class="btn btn-danger text-white" style="cussor:pointer, width:100px;" onClick=LockUnlock('${data.id}')>
                              <i class="fas fa-lock-open"</i> Unlock
                     </a></div>`;
                     } else {
                         return `
                          <div class="text-center"> 
-                           <a class="btn btn-success text-white" style="cussor:pointer, width:100px;" onclick="LockUnlock">
+                           <a class="btn btn-success text-white" style="cussor:pointer, width:100px;" onClick=LockUnlock('${data.id}')>
                              <i class="fas fa-lock"</i> LockUser
                          </div>`;
                     }
                 }
                 ,
-                "width": "30%"
+                "width": "100%"
             }
         ],
         "language": {
             "emptyTable": "no data found"
         },
         "width": "100%"
-    })
+    });
 }
 
 
-function Delete(url) {
-    swal({
-        title: "Are You sure You Want to Delete?",
-        text: "You will not be able to restore the data!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
-    }).then((willdelet) => {
-        if (willdelet) {
-            $.ajax({
-                type: 'DELETE',
-                url: url,
-                success: function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        dataTable.ajax.reload();
-                    } else {
-                        toastr.error(data.message)
-                    }
-
-                }
-            })
+function LockUnlock(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/user',
+        data: JSON.stringify(id),
+        contentType: "application/json",
+        success: function (data) {
+            if (data.success) {
+                toastr.success(data.message);
+                dataTable.ajax.reload();
+            } else {
+                toastr.error(data.message)
+            }
         }
-    })
+    });
 }

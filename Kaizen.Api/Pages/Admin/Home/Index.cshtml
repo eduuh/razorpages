@@ -1,0 +1,117 @@
+@page
+@model UploadandDowloadService.Pages.Admin.Home.IndexModel
+
+
+<div class="row">
+    <!-- seo fact area start -->
+    <div class="col-lg-8">
+        <div class="row">
+            <div class="col-md-6 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <div class="seofct-icon"><i class="ti-thumb-up"></i> Likes</div>
+                            <h2>2,315</h2>
+                        </div>
+                        <canvas id="seolinechart1" height="50"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-md-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg2">
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <div class="seofct-icon"><i class="ti-share"></i> Share</div>
+                            <h2>3,984</h2>
+                        </div>
+                        <canvas id="seolinechart2" height="50"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3 mb-lg-0">
+                <div class="card">
+                    <div class="seo-fact sbg3">
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <div class="seofct-icon">Impressions</div>
+                            <canvas id="seolinechart3" height="60"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="seo-fact sbg4">
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <div class="seofct-icon">New Users</div>
+                            <canvas id="seolinechart4" height="60"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>Cultural Reports</h4>
+
+    @foreach (var school in Model.Schoolist)
+    {
+        <div class="col-12">
+            <div class="row my-3">
+                <div class="col-lg-3 col-xl-3 col-md-6 pb-4">
+                    <div class="card" style="border: 2px solid #43ac6a; border-radius: 5px;">
+                        <div class="pl-3 pt-1 text-center">
+                            <h3 class="card-title text-primary"><b>@school.Name</b></h3>
+                        </div>
+                        <div class="d-flex justify-context-between form-control">
+                            <div class="col-9 badge badge-warning text-center" style="font-size: 14px;">
+                                @school.Motto
+                            </div>
+                            <div class="col-6 text-right">View School</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-xl-7 col-lg-12 mt-5">
+        <div class="card">
+            <div class="card-body bg1">
+                <h4 class="header-title text-white">Client Feadback</h4>
+                <div class="testimonial-carousel owl-carousel">
+                    <div class="tst-item">
+                        <div class="tstu-img">
+                            <img src="assets/images/team/team-author1.jpg" alt="author image">
+                        </div>
+                        <div class="tstu-content">
+                            <h4 class="tstu-name">Abel Franecki</h4>
+                            <span class="profsn">Designer</span>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum ut nihil numquam a
+                                aliquam alias necessitatibus ipsa soluta quam!</p>
+                        </div>
+                    </div>
+                    <div class="tst-item">
+                        <div class="tstu-img">
+                            <img src="assets/images/team/team-author2.jpg" alt="author image">
+                        </div>
+                        <div class="tstu-content">
+                            <h4 class="tstu-name">Abel Franecki</h4>
+                            <span class="profsn">Designer</span>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum ut nihil numquam a
+                                aliquam alias necessitatibus ipsa soluta quam!</p>
+                        </div>
+                    </div>
+                    <div class="tst-item">
+                        <div class="tstu-img">
+                            <img src="assets/images/team/team-author3.jpg" alt="author image">
+                        </div>
+                        <div class="tstu-content">
+                            <h4 class="tstu-name">Abel Franecki</h4>
+                            <span class="profsn">Designer</span>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum ut nihil numquam a
+                                aliquam alias necessitatibus ipsa soluta quam!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -8,6 +8,6 @@ namespace Kaizen.DataAccess.Data.Repository.IRepository
         Task<UserSuccessResponse> Login(UserLogin userlogin);
         Task<UserSuccessResponse> Register(UserRegister userregister);
         Task<AppUser> GetCurrentLoginDetails();
-
+        void Update(AppUser user);
     }
 }

@@ -14,8 +14,12 @@ namespace Kaizen.Models
         public bool isAdmin { get; set; } = false;
         public bool isTeacher { get; set; } = false;
         public bool isParent { get; set; } = false;
+        [NotMapped]
+        public bool isManager { get; set; } = false;
         public bool isRep { get; set; } = false;
         public string Region { get; set; }
+        public string SchoolId { get; set; }
+        [ForeignKey("SchoolId")]
         public virtual School School { get; set; }
         public virtual ICollection<Subject> Subjects { get; set; }
         public virtual ICollection<StudentSubjectEnrolled> SubjectEnrolled { get; set; }
@@ -72,6 +76,15 @@ namespace Kaizen.Models
                 {
                     return Role.Teacher;
                 }
+                else if (this.isAdmin)
+                {
+                    return Role.Admin;
+                }
+                else if (this.isManager)
+                {
+                    return Role.Manager;
+                }
+
 
                 return Role.Student;
             }

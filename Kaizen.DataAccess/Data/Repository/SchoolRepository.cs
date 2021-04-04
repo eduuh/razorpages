@@ -28,10 +28,13 @@ namespace Kaizen.DataAccess.Data.Repository
         public void Update(School school)
         {
             var objFromDb = _context.Schools.FirstOrDefault(s => s.Id == school.Id);
-
             objFromDb.Name = school.Name;
             objFromDb.Motto = school.Motto;
-
+            objFromDb.image = school.image;
+            if (objFromDb.ContactId == null)
+            {
+                objFromDb.ContactId = school.ContactId;
+            }
             _context.SaveChanges();
             // objFromDb.Contact.Address = 
         }
