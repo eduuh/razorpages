@@ -23,7 +23,7 @@ namespace Kaizen.Api.Pages.School.Home
         public void OnGet()
         {
             var user = _userManager.GetUserAsync(HttpContext.User).GetAwaiter().GetResult();
-            School = unitofwork.School.GetFirstOrDefault(s => s.Id == user.SchoolId, "Contact");
+            School = unitofwork.School.GetFirstOrDefault(s => s.Id == user.SchoolId);
         }
     }
 }

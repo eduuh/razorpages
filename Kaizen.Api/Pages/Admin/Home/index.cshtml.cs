@@ -19,7 +19,7 @@ namespace UploadandDowloadService.Pages.Admin.Home
 
         public void OnGet()
         {
-            Schoolist = _unitofWork.School.GetAll(null, null, "Contact");
+            Schoolist = _unitofWork.School.GetAll(null, null);
         }
     }
 }

@@ -9,7 +9,7 @@ using Kaizen.Models;
 using Kaizen.Models.Enums;
 
 namespace Kaizen.DataAccess
-{ 
+{
     public static class DummyDaERR_EMPTY_RESPONSEtaSeedData
     {
         private static readonly Random _random = new Random();
@@ -42,7 +42,6 @@ namespace Kaizen.DataAccess
 
         public static Faker<School> FakeSchool { get; } = new Faker<School>()
             .RuleFor(p => p.Name, f => f.Company.CompanyName())
-            .RuleFor(p => p.Contact, f => FakeContact.Generate(1)[0])
             .RuleFor(p => p.Motto, f => f.Company.CatchPhrase());
 
         public static Faker<Class> FakeClass { get; } = new Faker<Class>()

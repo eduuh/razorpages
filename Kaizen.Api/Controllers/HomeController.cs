@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Kaizen.Models;
+using Kaizen.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,15 @@ namespace UploadandDowloadService.Controllers
 
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
+            if (User.IsInRole(Role.Manager.ToString()))
+            {
+                return RedirectToPage("/Admin/Home/Index");
+            }
             return RedirectToPage("/School/Home/Index");
         }
 

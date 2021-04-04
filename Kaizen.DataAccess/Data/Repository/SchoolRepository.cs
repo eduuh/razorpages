@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
+using Kaizen.Models.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Kaizen.DataAccess.Data.Repository
@@ -16,12 +15,11 @@ namespace Kaizen.DataAccess.Data.Repository
         {
             this._context = context;
         }
-        public IEnumerable<SelectListItem> GetSchooListForDropdown()
+        public IEnumerable<SchoolName> GetSchooListForDropdown()
         {
-            return _context.Schools.Select(i => new SelectListItem()
+            return _context.Schools.Select(i => new SchoolName()
             {
-                Text = i.Name,
-                Value = i.Id.ToString()
+                Name = i.Name,
             });
         }
 
@@ -31,12 +29,10 @@ namespace Kaizen.DataAccess.Data.Repository
             objFromDb.Name = school.Name;
             objFromDb.Motto = school.Motto;
             objFromDb.image = school.image;
-            if (objFromDb.ContactId == null)
-            {
-                objFromDb.ContactId = school.ContactId;
-            }
-            _context.SaveChanges();
-            // objFromDb.Contact.Address = 
+            objFromDb.Website = school.Website;
+            objFromDb.image = school.image;
         }
+
+
     }
 }
