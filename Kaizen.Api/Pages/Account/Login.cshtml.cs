@@ -83,16 +83,7 @@ namespace uploaddownloadfiles.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.GetUserAsync(HttpContext.User);
-                    _logger.LogInformation("User logged in.");
-                    if (User.IsInRole(Role.Admin.ToString()))
-                    {
-                        return RedirectToPage("/School/Home/Index");
-                    }
-                    else if (User.IsInRole(Role.Manager.ToString()))
-                    {
-                        return RedirectToPage("/Admin/Home/Index");
-                    }
+                    return RedirectToAction("Index");
                 }
                 if (result.RequiresTwoFactor)
                 {

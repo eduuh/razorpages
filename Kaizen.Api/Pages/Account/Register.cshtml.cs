@@ -101,7 +101,7 @@ namespace uploaddownloadfiles.Areas.Identity.Pages.Account
 
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                if (!await _roleManager.RoleExistsAsync(Role.Admin.ToString()))
+                if (!await _roleManager.RoleExistsAsync(role))
                 {
                     _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString())).GetAwaiter().GetResult();
                     _roleManager.CreateAsync(new IdentityRole(Role.Manager.ToString())).GetAwaiter().GetResult();

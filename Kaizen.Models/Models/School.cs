@@ -12,12 +12,14 @@ namespace Kaizen.Models
 
         [Required]
         public string Name { get; set; }
+        public string Type { get; set; } // boys, girls , mixed
         [Required]
         public string Motto { get; set; }
         public string image { get; set; }
-        public string ContactId { get; set; }
+        public string Website { get; set; }
 
-        public string Phonumber { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Mobile { get; set; }
         public string Address { get; set; }
         public string Region { get; set; }
         public string State { get; set; }
@@ -26,7 +28,6 @@ namespace Kaizen.Models
         public string SchoolEmail { get; set; }
 
         [ForeignKey("ContactId")]
-        public virtual Contact Contact { get; set; }
         public virtual ICollection<AppUser> Stakeholders { get; set; } = new List<AppUser>();
         public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
     }

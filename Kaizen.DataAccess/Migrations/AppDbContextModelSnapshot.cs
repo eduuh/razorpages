@@ -34,6 +34,9 @@ namespace Kaizen.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContactId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -74,7 +77,7 @@ namespace Kaizen.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SchoolId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -108,6 +111,8 @@ namespace Kaizen.DataAccess.Migrations
 
                     b.HasIndex("ClassId");
 
+                    b.HasIndex("ContactId");
+
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
@@ -119,8 +124,6 @@ namespace Kaizen.DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("SchoolId");
 
                     b.HasIndex("SubjectId");
 
@@ -134,7 +137,11 @@ namespace Kaizen.DataAccess.Migrations
             modelBuilder.Entity("Kaizen.Models.Class", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Capacity")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -220,6 +227,35 @@ namespace Kaizen.DataAccess.Migrations
                     b.ToTable("Contents");
                 });
 
+            modelBuilder.Entity("Kaizen.Models.Models.CultureReport", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GenderAffected")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Incident")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OccurrenceTimes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Town")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CultureReports");
+                });
+
             modelBuilder.Entity("Kaizen.Models.School", b =>
                 {
                     b.Property<string>("Id")
@@ -229,8 +265,8 @@ namespace Kaizen.DataAccess.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Mobile")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Motto")
                         .IsRequired()
@@ -240,7 +276,7 @@ namespace Kaizen.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phonumber")
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pobox")
@@ -255,12 +291,16 @@ namespace Kaizen.DataAccess.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("image")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
 
                     b.ToTable("Schools");
                 });
@@ -475,7 +515,7 @@ namespace Kaizen.DataAccess.Migrations
 
                     b.HasOne("Kaizen.Models.School", "School")
                         .WithMany("Stakeholders")
-                        .HasForeignKey("SchoolId");
+                        .HasForeignKey("ContactId");
 
                     b.HasOne("Kaizen.Models.Subject", null)
                         .WithMany("Students")
@@ -508,15 +548,6 @@ namespace Kaizen.DataAccess.Migrations
                     b.Navigation("Subject");
 
                     b.Navigation("TraingSubject");
-                });
-
-            modelBuilder.Entity("Kaizen.Models.School", b =>
-                {
-                    b.HasOne("Kaizen.Models.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Kaizen.Models.StudentParent", b =>

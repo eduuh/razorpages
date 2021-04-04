@@ -1,5 +1,6 @@
 ﻿@page
 @model RegisterModel
+@using Kaizen.Models.Enums
 @using Taste.Utilities
 @{
     ViewData["Title"] = "Register";
@@ -70,8 +71,10 @@
                         </div>
 
                         <div class="py-2">
-                            <input type="radio" name="rdUserRole" value="@SD.ManagerRole" />@SD.ManagerRole
-                            <input type="radio" name="rdUserRole" value="@SD.SchoolAdmin" />@SD.SchoolAdmin
+                            <input type="radio" name="rdUserRole"
+                                value="@Role.Manager.ToString()" />@Role.Manager.ToString()
+                            <input type="radio" name="rdUserRole"
+                                value="@Role.Admin.ToString()" />@Role.Admin.ToString()
                         </div>
 
                         <div class="py-2">
