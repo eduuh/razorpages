@@ -37,6 +37,56 @@
                 </div>
 
                 <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SchoolObj.Address"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="SchoolObj.Address" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.Address"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SchoolObj.Region"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="SchoolObj.Region" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.Region"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SchoolObj.SchoolEmail"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="SchoolObj.SchoolEmail" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.SchoolEmail"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SchoolObj.Pobox"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School PoBox Number" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.Pobox"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SchoolObj.Pobox"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School PoBox Number" />
+                        <span class="text-danger" asp-validation-for="SchoolObj.Pobox"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <div class="col-9 offset-3">
                         <div class="row">
                             <div class="col-6">
@@ -56,6 +106,10 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div class="col-4 pt-3">
+                <i>Input and Image here</i>
             </div>
         </div>
     </div>
