@@ -44,7 +44,8 @@ namespace Kaizen.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(new { data = unitofWork.School.GetAll() });
+            var data = unitofWork.School.GetAll();
+            return Json(new { data = _mapper.Map<IEnumerable<School>, IEnumerable<SchoolDto>>(data) });
         }
 
         [HttpGet("names")]

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Kaizen.Models;
 using Kaizen.Models.Dto;
+using UploadandDowloadService.Dto.AppUser;
 
 namespace UploadandDowloadService.MappingProfiles
 {
@@ -20,6 +21,8 @@ namespace UploadandDowloadService.MappingProfiles
             CreateMap<Content, ContentResult>();
             CreateMap<TrainingSubject, TrainingContentDto>();
             CreateMap<TrainingContentDto, TrainingSubject>();
+            CreateMap<AppUser, AppUserDto>();
+            CreateMap<AppUserDto, AppUser>();
         }
     }
 }
