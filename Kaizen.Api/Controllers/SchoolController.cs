@@ -5,6 +5,7 @@ using AutoMapper;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Kaizen.Models.Dto;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -17,11 +18,13 @@ namespace Kaizen.Api.Controllers
     {
         private readonly IUnitofWork unitofWork;
         private readonly IMapper _mapper;
+        public readonly IWebHostEnvironment _hostingenvironment;
 
-        public SchoolController(IUnitofWork unitofWork, IMapper mapper)
+        public SchoolController(IUnitofWork unitofWork, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             this._mapper = mapper;
             this.unitofWork = unitofWork;
+            _hostingenvironment = hostingEnvironment;
         }
 
 

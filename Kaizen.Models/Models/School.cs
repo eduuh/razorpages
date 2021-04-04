@@ -14,8 +14,12 @@ namespace Kaizen.Models
         public string Name { get; set; }
         [Required]
         public string Motto { get; set; }
+        public string image { get; set; }
+        public string ContactId { get; set; }
+
+        [ForeignKey("ContactId")]
         public virtual Contact Contact { get; set; }
-        public virtual ICollection<AppUser> Stakeholders { get; set; }
-        public virtual ICollection<Class> Classes { get; set; }
+        public virtual ICollection<AppUser> Stakeholders { get; set; } = new List<AppUser>();
+        public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
     }
 }

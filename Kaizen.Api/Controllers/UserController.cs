@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UploadandDowloadService.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    [Route("user/")]
     public class UserController : Controller
     {
         private readonly IUnitofWork unitofWork;
@@ -49,7 +48,7 @@ namespace UploadandDowloadService.Controllers
             return Json(new { success = true, message = "Operation Succesfully" });
         }
 
-        [HttpPost("user/login")]
+        [HttpPost("login")]
         public async Task<ActionResult<UserSuccessResponse>> Login([FromBody] UserLogin userLogin)
         {
             UserSuccessResponse result = await unitofWork.AppUser.Login(userLogin);
@@ -57,7 +56,7 @@ namespace UploadandDowloadService.Controllers
         }
 
 
-        [HttpPost("user/register")]
+        [HttpPost("register")]
         public async Task<ActionResult<UserSuccessResponse>> Register([FromBody] UserRegister userRegister)
         {
             var data = await unitofWork.AppUser.Register(userRegister);
