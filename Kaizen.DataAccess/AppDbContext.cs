@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Kaizen.Models;
+using Kaizen.Models.Models;
 
 namespace Kaizen.DataAccess
 {
@@ -16,6 +17,7 @@ namespace Kaizen.DataAccess
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Content> Contents { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<CultureReport> CultureReports { get; set; }
         public DbSet<TrainingSubject> TrainingContents { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
