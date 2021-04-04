@@ -161,7 +161,9 @@ else
                                     {
                                         if (user.Type == Kaizen.Models.Enums.Role.Teacher)
                                         {
-                                            <small>@user.FullName</small>
+                                            <div class="row">
+                                                <small>@user.FullName</small>
+                                            </div>
                                         }
                                     }
                                 </div>
@@ -175,7 +177,9 @@ else
                                                 Class</i></a>Classes</h6>
                                     @foreach (var classiten in Model.Classes)
                                     {
-                                        <small>classiten.Name</small>
+                                        <div class="row">
+                                            <small>classiten.Name</small>
+                                        </div>
                                     }
                                 </div>
                             </div>
