@@ -10,10 +10,10 @@ namespace Kaizen.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string type { get; set; }
+        public string Type { get; set; }
         public string BlobUrl { get; set; }
+        public string Region { get; set; }
         public virtual Subject Subject { get; set; }
-        public virtual TrainingSubject TraingSubject { get; set; }
         public string ContentType { get; set; }
     }
 }

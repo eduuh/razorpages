@@ -1,0 +1,95 @@
+﻿@page
+@model UploadandDowloadService.Pages.Admin.Content.IndexModel
+@{
+}
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 20px;
+        align-items: stretch;
+    }
+
+    .grid>article {
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid>article img {
+        max-width: 100%;
+    }
+
+    .text {
+        padding: 0 20px 20px;
+    }
+
+    .text>button {
+        background: gray;
+        border: 0;
+        color: white;
+        padding: 10px;
+        width: 100%;
+    }
+</style>
+
+<div class="container border">
+    <div class="row">
+        <div class="col-6"><strong>
+                <h1 class="text-primary">Cultural Practices Content</h1>
+            </strong></div>
+        <div class="col-6 text-right">
+            <a asp-page="Culture" class="btn btn-primary"> <i class="fas fa-plus"></i> &nbsp; Create New</a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <main class="grid ">
+
+        @for (int i = 0; i < 8; i++)
+        {
+            <article>
+                <img src="~/images/images.jpeg" alt="Sample photo">
+                <div class="text">
+                    <h3>Completely Synergize</h3>
+                    <p>Dramatically engage seamlessly visualize quality intellectual capital without superior collaboration
+                        and
+                        idea-sharing.</p>
+                    <button>Here's how</button>
+                </div>
+            </article>
+        }
+
+    </main>
+</div>
+<br>
+<br>
+<hr>
+
+<div class="container border">
+    <div class="row">
+        <div class="col-6"><strong>
+                <h1 class="text-primary">Teacher Training Content</h1>
+            </strong></div>
+        <div class="col-6 text-right">
+            <a asp-page="Training" class="btn btn-primary"> <i class="fas fa-plus"></i> &nbsp; Create New</a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <main class="grid ">
+        @for (int i = 0; i < 8; i++)
+        {
+            <article>
+                <img src="/pix/samples/24m.jpg" alt="Sample photo">
+                <div class="text">
+                    <h3>Completely Synergize</h3>
+                    <p>Dramatically engage seamlessly visualize quality intellectual capital without superior collaboration
+                        and
+                        idea-sharing.</p>
+                    <button>Here's how</button>
+                </div>
+            </article>
+        }
+    </main>
+</div>
