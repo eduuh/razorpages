@@ -21,9 +21,9 @@ namespace UploadandDowloadService
                 {
                     var context = service.GetRequiredService<AppDbContext>();
                     // var usermanager = service.GetRequiredService<UserManager<AppUser>>();
-                    context.Database.Migrate();
+                    //context.Database.Migrate();
                     SeedData.CreateDefaultRoles(service).Wait();
-                    SeedData.Initialize(service, "Pa$$w0rd54").Wait();
+                    //SeedData.Initialize(service, "Pa$$w0rd54").Wait();
                     // DummyDataSeedData.InitializeUsers(service).Wait();
                 }
                 catch (Exception ex)

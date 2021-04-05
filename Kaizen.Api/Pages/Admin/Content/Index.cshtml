@@ -46,15 +46,13 @@
     <br>
     <main class="grid ">
 
-        @for (int i = 0; i < 8; i++)
+        @foreach (var item in Model.Contents)
         {
             <article>
-                <img src="~/images/cp/ncp1r.jpg" alt="">
+                <img src="@item.BlobUrl" alt="Cultural practices">
                 <div class="cp">
-                    <h3>Forced early marriages</h3>
-                    <p>When a child is forced to get married too early when instead she should be in school, she is derailed from education and forced to focus on family duties. 
-                        Soon she is kicked out of school and her dreams of education are quckly flushed down the drain. This not only impacts her mentally but
-                         as most untreated metal health issues her health too and as a ripple effect the family's, community's and society's wealth</p>
+                    <h3>@item.Name</h3>
+                    <p>@item.Description</p>
                     <a href="#">More...</a>
                 </div>
             </article>
