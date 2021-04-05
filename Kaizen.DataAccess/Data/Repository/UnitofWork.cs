@@ -34,11 +34,14 @@ AppDbContext context,
             Class = new ClassRepository(_db);
             AppUser = new AppUserRepository(_db, usermanager, signinmanager, jwtgenerator, userAccessor, roleManager);
             CultureReport = new CultureReportRepository(_db);
+            Content = new ContentRepository(db);
         }
         public ISchool School { get; private set; }
         public IClass Class { get; private set; }
         public ICultureReport CultureReport { get; private set; }
         public IAppUserRepository AppUser { get; private set; }
+
+        public IContent Content { get; set; }
 
         public void Dispose()
         {

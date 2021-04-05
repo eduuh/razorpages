@@ -3,6 +3,7 @@ using AutoMapper;
 using Kaizen.DataAccess.Data.Repository.IRepository;
 using Kaizen.Models;
 using Kaizen.Models.Dto;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace uploaddownloadfiles.Controllers
@@ -13,6 +14,7 @@ namespace uploaddownloadfiles.Controllers
     {
         private readonly IUnitofWork _unitofWork;
         private readonly IMapper _mapper;
+        private IWebHostEnvironment _hostingEnvironment;
         public ContentsController(IUnitofWork unitofWork, IMapper mapper)
         {
             this._mapper = mapper;

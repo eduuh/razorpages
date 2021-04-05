@@ -7,6 +7,7 @@ namespace Kaizen.DataAccess.Data.Repository.IRepository
         ISchool School { get; }
         IClass Class { get; }
         ICultureReport CultureReport { get; }
+        IContent Content { get; }
         IAppUserRepository AppUser { get; }
 
         void Save();
