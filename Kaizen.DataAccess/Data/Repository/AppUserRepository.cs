@@ -12,7 +12,6 @@ namespace Kaizen.DataAccess.Data.Repository
         private readonly AppDbContext context;
         private readonly UserManager<AppUser> usermanager;
         private readonly SignInManager<AppUser> signinmanager;
-        private readonly IJwtToken jwtgenerator;
         private readonly IUserAccessor userAccessor;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IJwtToken _jwtgenerator;
@@ -41,6 +40,10 @@ namespace Kaizen.DataAccess.Data.Repository
 
         public async Task<UserSuccessResponse> Login(UserLogin userlogin)
         {
+            if (userlogin.Email == null && userlogin.Password == null)
+            {
+                throw new RestException(System.Net.HttpStatusCode.Unauthorized, new { message = "Please Input an Email and Pasword" });
+            }
             AppUser user = await usermanager.FindByEmailAsync(userlogin.Email);
 
             if (user == null)
@@ -51,7 +54,7 @@ namespace Kaizen.DataAccess.Data.Repository
 
             var result = await signinmanager.CheckPasswordSignInAsync(user, userlogin.Password, false);
 
-            if (result.Succeeded) return new UserSuccessResponse(user.Email, jwtgenerator.createToken(user), user.UserName);
+            if (result.Succeeded) return new UserSuccessResponse(user.Email, _jwtgenerator.createToken(user), user.UserName);
 
             throw new RestException(System.Net.HttpStatusCode.Unauthorized, new { message = "Please Use the correct Password" });
 
@@ -76,7 +79,7 @@ namespace Kaizen.DataAccess.Data.Repository
 
             var result = await usermanager.CreateAsync(user, userregister.Password);
             var ensurerole = await EnsureRole(user, userregister.Role);
-            if (!ensurerole.Succeeded)
+            if (ensurerole.Succeeded == false)
             {
                 await usermanager.DeleteAsync(user);
                 throw new RestException(System.Net.HttpStatusCode.InternalServerError, new { message = "User registration not successfull Please Try again" });
@@ -84,7 +87,7 @@ namespace Kaizen.DataAccess.Data.Repository
 
             if (result.Succeeded)
             {
-                return new UserSuccessResponse(user.Email, jwtgenerator.createToken(user), user.UserName);
+                return new UserSuccessResponse(user.Email, _jwtgenerator.createToken(user), user.UserName);
             }
             throw new RestException(System.Net.HttpStatusCode.InternalServerError, new { message = "User registration not successfull Please Try again" });
         }

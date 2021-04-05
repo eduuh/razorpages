@@ -51,22 +51,18 @@ namespace UploadandDowloadService
             });
 
 
-
-
             services.AddIdentity<AppUser, IdentityRole>()
              .AddEntityFrameworkStores<AppDbContext>()
              .AddDefaultTokenProviders()
              .AddDefaultUI();
 
-
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 3;
-                options.Password.RequireDigit = true;
+                options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Lockout.MaxFailedAccessAttempts = 4;
+                options.Lockout.MaxFailedAccessAttempts = 9;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             });
