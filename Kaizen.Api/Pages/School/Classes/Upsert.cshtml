@@ -21,7 +21,7 @@
                         <label asp-for="Class.Name"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="Class.Name" />
+                        <input class="form-control" asp-for="Class.Name" required />
                         <span class="text-danger" asp-validation-for="Class.Name"></span>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <label asp-for="Class.Description"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="Class.Description" />
+                        <input class="form-control" asp-for="Class.Description" required />
                         <span class="text-danger" asp-validation-for="Class.Description"></span>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <label asp-for="Class.Capacity"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="Class.Capacity" />
+                        <input class="form-control" asp-for="Class.Capacity" required />
                         <span class="text-danger" asp-validation-for="Class.Capacity"></span>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                                 }
                             </div>
                             <div class="col-6">
-                                <a asp-asp-page="./Index" class="btn btn-success form-control">Back to List</a>
+                                <a asp-page="./Index" class="btn btn-success form-control">Back to List</a>
                             </div>
                         </div>
                     </div>

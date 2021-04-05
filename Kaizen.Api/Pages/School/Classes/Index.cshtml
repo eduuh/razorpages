@@ -12,7 +12,6 @@
         </div>
     </div>
     <br> <br />
-
     <table id="Dt_Load" class="table table-hover table-striped table-bordered" style="width: 100%;">
         <thead>
             <tr>
@@ -29,11 +28,16 @@
                 <td>@items.Name</td>
                 <td>@items.Description</td>
                 <td>@items.Capacity</td>
-                <tb><a asp-page="/Admin/School/Class"></a></tb>
+                <td><a asp-page="/School/Classes/Class/@items.Id">Edit Class</a></td>
+                <td><a asp-page="/Admin/School/Class">View Class</a></td>
                 </tr>
             }
         </tbody>
     </table>
+
+ <div class="col-6 text-right">
+            <a asp-page="School/Home/Index" class="btn btn-primary"> &nbsp; Back to School</a>
+        </div>
 </div>
 
 

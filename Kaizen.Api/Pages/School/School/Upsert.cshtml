@@ -21,7 +21,7 @@
                         <label asp-for="SchoolObj.Name"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Name" />
+                        <input class="form-control" asp-for="SchoolObj.Name" required />
                         <span class="text-danger" asp-validation-for="SchoolObj.Name"></span>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <label asp-for="SchoolObj.Type"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Type" />
+                        <input class="form-control" asp-for="SchoolObj.Type" required />
                         <span class="text-danger" asp-validation-for="SchoolObj.Type"></span>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <label asp-for="SchoolObj.Motto"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Motto" />
+                        <input class="form-control" asp-for="SchoolObj.Motto" required />
                         <span class="text-danger" asp-validation-for="SchoolObj.Motto"></span>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         <label asp-for="SchoolObj.Address"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Address"
+                        <input class="form-control" asp-for="SchoolObj.Address" required
                             placeholder="example: Nyeri County, Kimathin, B5" />
                         <span class="text-danger" asp-validation-for="SchoolObj.Address"></span>
                     </div>
@@ -62,7 +62,7 @@
                         <label asp-for="SchoolObj.Region"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Region" placeholder="example: Nyeri" />
+                        <input class="form-control" asp-for="SchoolObj.Region" placeholder="example: Nyeri" required />
                         <span class="text-danger" asp-validation-for="SchoolObj.Region"></span>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <label asp-for="SchoolObj.SchoolEmail"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.SchoolEmail" />
+                        <input class="form-control" asp-for="SchoolObj.SchoolEmail" required />
                         <span class="text-danger" asp-validation-for="SchoolObj.SchoolEmail"></span>
                     </div>
                 </div>
@@ -82,7 +82,8 @@
                         <label asp-for="SchoolObj.Pobox"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School Post Number" />
+                        <input class="form-control" asp-for="SchoolObj.Pobox" placeholder="School Post Number"
+                            required />
                         <span class="text-danger" asp-validation-for="SchoolObj.Pobox"></span>
                     </div>
                 </div>
@@ -92,7 +93,8 @@
                         <label asp-for="SchoolObj.PhoneNumber"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="SchoolObj.PhoneNumber" placeholder="School PoBox Number" />
+                        <input class="form-control" asp-for="SchoolObj.PhoneNumber" placeholder="School PoBox Number"
+                            required />
                         <span class="text-danger" asp-validation-for="SchoolObj.PhoneNumber"></span>
                     </div>
                 </div>
@@ -102,7 +104,8 @@
                         <label asp-for="SchoolObj.Website"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" type="url" asp-for="SchoolObj.Website" placeholder="Website Url" />
+                        <input class="form-control" type="url" asp-for="SchoolObj.Website" placeholder="Website Url"
+                            required />
                         <span class="text-danger" asp-validation-for="SchoolObj.Website"></span>
                     </div>
                 </div>
@@ -121,7 +124,7 @@
                                 }
                             </div>
                             <div class="col-6">
-                                <a asp-asp-page="./Index" class="btn btn-success form-control">Back to List</a>
+                                <a asp-page="./Index" class="btn btn-success form-control">Back to List</a>
                             </div>
                         </div>
                     </div>
