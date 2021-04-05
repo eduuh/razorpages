@@ -12,6 +12,7 @@ using UploadandDowloadService.Dto.AppUser;
 namespace UploadandDowloadService.Controllers
 {
     [Route("user/")]
+    [AllowAnonymous]
     public class UserController : Controller
     {
         private readonly IUnitofWork unitofWork;
@@ -65,7 +66,7 @@ namespace UploadandDowloadService.Controllers
         {
             var data = await unitofWork.AppUser.Register(userRegister);
             unitofWork.Save();
-            return Json(new { data = data });
+            return Json(data);
         }
 
 

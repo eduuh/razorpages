@@ -15,11 +15,13 @@ namespace UploadandDowloadService.Pages.Admin.Home
         }
 
         public IEnumerable<Kaizen.Models.School> Schoolist { get; set; }
+        public IEnumerable<Kaizen.Models.AppUser> AppUsers { get; set; }
         public Contact Contact { get; set; }
 
         public void OnGet()
         {
-            Schoolist = _unitofWork.School.GetAll(null, null);
+            Schoolist = _unitofWork.School.GetAll();
+            AppUsers = _unitofWork.AppUser.GetAll();
         }
     }
 }
