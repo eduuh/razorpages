@@ -1,0 +1,48 @@
+<mxfile>
+    <diagram id="V9g_4HApZYTPs9fAyFqY" name="Page-1">
+        <mxGraphModel dx="1374" dy="704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/azure2/app_services/App_Services.svg;" vertex="1" parent="1">
+                    <mxGeometry x="504" y="610" width="64" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/azure2/app_services/App_Services.svg;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="28" width="64" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.smartphone;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="160" width="50" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=none;fillColor=#00BEF2;shape=mxgraph.azure.laptop;pointerEvents=1;" vertex="1" parent="1">
+                    <mxGeometry x="70" y="30" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="dashed=0;outlineConnect=0;html=1;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.weblogos.sms;fillColor=#008a00;strokeColor=#005700;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="300" width="110" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/mscae/SignalR.svg;" vertex="1" parent="1">
+                    <mxGeometry x="377" y="120" width="90" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/azure2/databases/SQL_Database.svg;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="28" width="48" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=none;fillColor=#00BEF2;shape=mxgraph.azure.storage_blob;" vertex="1" parent="1">
+                    <mxGeometry x="660" y="140" width="100" height="82" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="points=[[0.015,0.015,0],[0.985,0.015,0],[0.985,0.985,0],[0.015,0.985,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];verticalLabelPosition=bottom;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.cell_phone;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="430" width="60" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=#001DBC;fillColor=#0050ef;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;align=center;shape=mxgraph.office.communications.sms_gateway;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="365" y="260" width="120" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="sE-0ZHOl1v7MTvJmMt9U" name="Page-2">
+        <mxGraphModel dx="1374" dy="417" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="PlWqMNpH_iW3O--Jz2ah-0"/>
+                <mxCell id="PlWqMNpH_iW3O--Jz2ah-1" parent="PlWqMNpH_iW3O--Jz2ah-0"/>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

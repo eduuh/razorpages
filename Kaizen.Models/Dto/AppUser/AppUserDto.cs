@@ -10,9 +10,7 @@ namespace UploadandDowloadService.Dto.AppUser
         public string Email { get; set; }
         public string Type { get; set; }
         public string LockoutEnd { get; set; }
-
-        public string FullName { get; set; }
-
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
 
     }
 

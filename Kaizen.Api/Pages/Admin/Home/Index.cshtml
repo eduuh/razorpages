@@ -91,7 +91,9 @@
                     <div class="text col-sm">
                         <h3>@school.Name</h3>
                         <h6>@school.Motto</h6>
-                        <a asp-page="/Admin/School/Index" class="btn btn-dark"> <i class="fas fa-eye"></i> &nbsp; View
+                        <a asp-page="/Admin/School/Profile" asp-route-id="@school.Id" class="btn btn-dark"> <i
+                                class="fas fa-eye"></i>
+                            &nbsp; View
                             school Profile
                         </a>
                     </div>
