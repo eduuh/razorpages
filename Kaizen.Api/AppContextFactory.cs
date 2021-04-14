@@ -11,7 +11,7 @@ public class AppContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        var connectstring = "Server=tcp:kaizenserver.database.windows.net,1433;Initial Catalog=kaizen;Persist Security Info=False;User ID=kaizenadmin;Password=pK}w/5cfF<RwvRjWGSB5RJ=^^;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        var connectstring = "Server=tcp:afrilearn-server.database.windows.net,1433;Initial Catalog=kaizen;Persist Security Info=False;User ID=Humphryshikunzi;Password=2288Shiks.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         optionsBuilder.UseSqlServer(connectstring);
         return new AppDbContext(optionsBuilder.Options);
     }
